@@ -1,0 +1,46 @@
+@import "tailwindcss";
+/* Primer proyecto con Tailwind CSS y Astro */
+@theme {
+  --color-bg : #0b0b0a;
+  --color-fg: #f0eee8;
+  --color-muted: #8c8a82;
+  --color-dim: #5c5b56;
+  --color-line: rgba(240,238,232,0.13);
+  --color-card: #101010;
+  --color-card-2: #191913;
+  --color-acc: #e8e4dc;
+  --color-ink: #0b0b0a;
+  --font-sans: "Space Grotesk", Helvetica, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+  --font-serif: "Instrument Serif", Georgia, serif;
+}
+/* Capa de estilo global para el proyecto */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    background: var(--color-bg);
+    color: var(--color-fg);
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a {
+    color: var(--color-acc);
+    text-decoration: none;
+  }
+  a:hover {
+    color: var(--color-fg);
+  }
+  ::selection {
+    background: var(--color-acc);
+    color: var(--color-ink);
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.001ms !important;
+      transition-duration: 0.001ms !important;
+      /* scroll-behavior: auto !important; */
+    }
+  }
+}
