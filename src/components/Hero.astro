@@ -50,7 +50,9 @@ const stats = [
       Luis Miguel <span class="tracking-wide">Montalván</span>
     </h1>
 
-    <p class="m-0 max-w-140 leading-[1.55] text-fg/75 text-pretty">
+    <p
+      class="m-0 max-w-140 leading-[1.55] text-fg/75 text-pretty text-[clamp(16px,1.5vw,20px)]"
+    >
       Escribo el código y administro la máquina donde corre.
       <em class="font-serif italic text-fg">TypeScript, NestJS, PHP y Java</em>
       — más DNS, correo, firewall y despliegues en mi propio servidor dedicado.
@@ -137,7 +139,7 @@ const stats = [
       </div>
 
       <div
-        class="absolute -right-3 bottom-6 z-5 flex items-center gap-2 rounded-full border border-acc bg-bg px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.1em] text-acc"
+        class="absolute -right-3 bottom-6 z-5 flex items-center gap-2 rounded-full border border-acc bg-bg px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-widest text-acc"
       >
         <a
           href="https://certificates.mooc.fi/validate/rv0jtbu05qo"
@@ -232,7 +234,6 @@ const stats = [
       return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; // extraemos los componentes rojo, verde y azul
     };
     const fg = hexToRgb(css.getPropertyValue("--color-fg")); // color de primer plano (texto)
-    const bg = hexToRgb(css.getPropertyValue("--color-bg")); // color de fondo
     const acc = hexToRgb(css.getPropertyValue("--color-acc")); // color de acento (verde)
     //--geometria de la regilla --
     const CELL = 20; // tamaño de celda en px

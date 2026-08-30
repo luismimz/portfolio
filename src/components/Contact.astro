@@ -1,0 +1,70 @@
+---
+const links = [
+  {
+    label: "hola@luismontalvan.com",
+    href: "mailto:hola@luismontalvan.com",
+    icon: "→",
+  },
+  {
+    label: "github.com/luismimz",
+    href: "https://github.com/luismimz",
+    icon: "↗",
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/in/luis-miguel-montalv%C3%A1n-a0b09a42/",
+    icon: "↗",
+  },
+  {
+    label: "instagram.com/luismi.mz",
+    href: "https://www.instagram.com/luismi.mz",
+    icon: "↗",
+  },
+  {
+    label: "Certificado Java I (MOOC.fi)",
+    href: "https://certificates.mooc.fi/validate/rv0jtbu05qo",
+    icon: "↗",
+  },
+  { label: "Descargar CV (PDF)", href: "/cv.pdf", icon: "↓" },
+];
+
+const isExternal = (href: string) => href.startsWith("http");
+---
+
+<section id="contacto" class="mx-auto max-w-375 px-7 pb-19 pt-31">
+  <div
+    class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] items-start gap-10.5 border-t border-line pt-12.5"
+  >
+    <div class="flex flex-col gap-5.5">
+      <h2
+        class="m-0 text-[clamp(36px,6vw,86px)] font-medium leading-[0.93] tracking-[-0.04em]"
+      >
+        Hablemos<br />
+        <em class="font-serif italic text-acc">de tu equipo</em>
+      </h2>
+      <p
+        class="m-0 max-w-110 text-[15.5px] leading-[1.6] text-muted text-pretty"
+      >
+        Busco mi primer puesto junior en un equipo donde se revise código con
+        cariño. Escribo desde mi propio servidor de correo y respondo el mismo
+        día.
+      </p>
+    </div>
+
+    <div class="flex flex-col gap-px border border-line bg-line">
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            target={isExternal(l.href) ? "_blank" : undefined}
+            rel={isExternal(l.href) ? "noopener" : undefined}
+            class="flex items-center justify-between bg-bg px-6 py-5.25 text-fg transition-colors hover:bg-card-2"
+          >
+            <span class="font-mono text-[13.5px]">{l.label}</span>
+            <span class="text-acc">{l.icon}</span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>

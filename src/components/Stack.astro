@@ -1,0 +1,60 @@
+---
+import { skillGroups } from "../data/skills";
+import SkillBar from "./SkillBar.astro";
+---
+
+<section id="stack" class="mx-auto max-w-375 px-7 pb-10 pt-26">
+  <div class="mb-10 flex flex-wrap items-end justify-between gap-7.5">
+    <h2
+      class="m-0 text-[clamp(30px,4.2vw,58px)] font-medium leading-none tracking-[-0.04em]"
+    >
+      Stack y lenguajes
+    </h2>
+    <p class="m-0 max-w-[320px] text-[13.5px] leading-[1.6] text-muted">
+      Honesto con el nivel: lo que uso a diario, lo que manejo y lo que estoy
+      aprendiendo ahora.
+    </p>
+  </div>
+
+  <div
+    class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-x-15.5 gap-y-9.5"
+  >
+    {
+      skillGroups.map((group) => (
+        <div class="flex flex-col gap-4.75">
+          <div class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim">
+            {group.label}
+          </div>
+          {group.skills.map((s) => (
+            <SkillBar name={s.name} level={s.level} />
+          ))}
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const bars = document.querySelectorAll<HTMLElement>("#stack [data-bar]");
+
+  const fill = (bar: HTMLElement) => {
+    bar.style.width = `${Number(bar.dataset.bar)}%`;
+  };
+
+  if (reduced) {
+    bars.forEach(fill);
+  } else {
+    const io = new IntersectionObserver(
+      (entries, obs) => {
+        for (const e of entries) {
+          if (!e.isIntersecting) continue;
+          fill(e.target as HTMLElement);
+          obs.unobserve(e.target);
+        }
+      },
+      { threshold: 0.5 },
+    );
+    bars.forEach((b) => io.observe(b));
+  }
+</script>

@@ -1,0 +1,82 @@
+---
+import { degrees, courses } from "../data/education";
+---
+
+<section id="formacion" class="mx-auto max-w-375 px-7 pb-10 pt-26">
+  <div class="mb-9.5 flex flex-wrap items-end justify-between gap-7.5">
+    <h2
+      class="m-0 text-[clamp(30px,4.2vw,58px)] font-medium leading-none tracking-[-0.04em]"
+    >
+      Formación y certificados
+    </h2>
+    <p class="m-0 max-w-90 text-[14.5px] leading-[1.6] text-muted text-pretty">
+      Desarrollo y sistemas en paralelo: por eso escribo el código y también
+      levanto la máquina donde corre.
+    </p>
+  </div>
+
+  <!-- Bloque 1: titulaciones (3 tarjetas) -->
+  <div class="mb-7.5 grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-5">
+    {
+      degrees.map((d) => {
+        const Tag = d.href ? "a" : "div";
+        return (
+          <Tag
+            href={d.href}
+            target={d.href ? "_blank" : undefined}
+            rel={d.href ? "noopener" : undefined}
+            data-tilt
+            class:list={[
+              "flex flex-col gap-3 border bg-card p-6.5 text-fg transition-colors duration-300",
+              d.href
+                ? "border-acc hover:bg-card-2"
+                : "border-line hover:border-acc",
+            ]}
+          >
+            <span class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-acc">
+              {d.eyebrow}
+            </span>
+            <h3 class="m-0 text-[21px] font-medium leading-[1.2] tracking-[-0.02em]">
+              {d.title}
+            </h3>
+            <p class="m-0 text-[13.5px] leading-[1.65] text-muted text-pretty">
+              {d.text}
+            </p>
+          </Tag>
+        );
+      })
+    }
+  </div>
+
+  <!-- Bloque 2: cursos (tira de celdas) -->
+  <div
+    class="grid grid-cols-[repeat(auto-fit,minmax(260px,1fr))] gap-px border border-line bg-line"
+  >
+    {
+      courses.map((c) => {
+        const Tag = c.href ? "a" : "div";
+        return (
+          <Tag
+            href={c.href}
+            target={c.href ? "_blank" : undefined}
+            rel={c.href ? "noopener" : undefined}
+            class:list={[
+              "flex flex-col gap-1.75 bg-bg px-5.5 py-5 text-fg",
+              c.href && "transition-colors hover:bg-card-2",
+            ]}
+          >
+            <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
+              {c.meta}
+            </span>
+            <span class="text-[15px]">{c.title}</span>
+            {c.note && (
+              <span class="text-[12.5px] leading-normal text-muted">
+                {c.note}
+              </span>
+            )}
+          </Tag>
+        );
+      })
+    }
+  </div>
+</section>

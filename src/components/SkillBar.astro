@@ -1,0 +1,21 @@
+---
+interface Props {
+  name: string;
+  level: number;
+}
+const { name, level } = Astro.props;
+---
+
+<div class="flex flex-col gap-2">
+  <div class="flex justify-between text-[14.5px]">
+    <span>{name}</span>
+    <span class="font-mono text-dim">{level}</span>
+  </div>
+  <div class="h-0.75 bg-line">
+    <div
+      data-bar={level}
+      class="h-0.75 w-0 bg-acc transition-[width] duration-1200 ease-[cubic-bezier(0.19,1,0.22,1)]"
+    >
+    </div>
+  </div>
+</div>
