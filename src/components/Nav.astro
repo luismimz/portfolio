@@ -1,0 +1,88 @@
+---
+const links = [
+  { href: "#trabajos", label: "Trabajos" },
+  { href: "#antes-despues", label: "Antes/Después" },
+  { href: "#trayectoria", label: "Experiencia" },
+  { href: "#formacion", label: "Formación" },
+  { href: "#stack", label: "Stack" },
+];
+---
+
+<nav
+  class="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-5 border-b border-line bg-bg/70 px-7 py-4 backdrop-blur-md"
+>
+  <a href="#top" class="flex items-center gap-2.5 text-fg">
+    <span class="dot h-2 w-2 rounded-full bg-acc"></span>
+    <span class="font-mono text-[12.5px] tracking-wide">luismontalvan.com</span>
+  </a>
+  <div
+    class="flex items-center gap-5 font-mono text-[11.5px] uppercase tracking-[0.09em]"
+  >
+    {
+      links.map((l) => (
+        <a
+          href={l.href}
+          data-navlink={l.href.slice(1)}
+          class="text-muted transition-colors hover:text-fg data-[active=true]:text-fg"
+        >
+          {l.label}
+        </a>
+      ))
+    }
+    <a
+      href="#contacto"
+      class="rounded-full border border-acc px-4 py-2 text-acc transition-colors hover:bg-acc hover:text-ink"
+    >
+      Contacto</a
+    >
+  </div>
+  <div
+    data-progress
+    class="absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-acc"
+  >
+  </div>
+</nav>
+<style>
+  .dot {
+    animation: blink 2.6s steps(1) infinite;
+  }
+  @keyframes blink {
+    0%,
+    60% {
+      opacity: 1;
+    }
+    61%,
+    100% {
+      opacity: 0.15;
+    }
+  }
+</style>
+<script>
+  //Barra de proceso de scroll
+  const bar = document.querySelector<HTMLElement>("[data-progress]");
+  const onScroll = () => {
+    const el = document.documentElement;
+    const max = el.scrollHeight - el.clientHeight;
+    const ratio = max > 0 ? el.scrollTop / max : 0;
+    if (bar) bar.style.transform = `scaleX(${ratio})`;
+  };
+  document.addEventListener("scroll", onScroll, { passive: true });
+  onScroll();
+  //Link activo según la seccion visible
+  const navlinks = [
+    ...document.querySelectorAll<HTMLAnchorElement>("[data-navlink]"),
+  ];
+  const linkById = new Map(navlinks.map((a) => [a.dataset.navlink, a]));
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        navlinks.forEach((a) => (a.dataset.active = "false"));
+        const active = linkById.get(entry.target.id);
+        if (active) active.dataset.active = "true";
+      }
+    },
+    { rootMargin: "-40% 0px -55% 0px" },
+  );
+  document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
+</script>
