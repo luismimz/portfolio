@@ -1,0 +1,86 @@
+---
+const rowTop = [
+  "TypeScript",
+  "NextJS",
+  "Next.js",
+  "Node",
+  "Java",
+  "PHP",
+  "PostgreSQL",
+  "MySQL",
+  "Tailwind",
+  "Linux",
+];
+const rowBottom = [
+  "WordPress",
+  "Joomla",
+  "WooCommerce",
+  "Nginx",
+  "DNS",
+  "Correo",
+  "Firewall",
+  "Docker",
+];
+---
+
+<div class="relative overflow-hidden border-y border-lne bg-card">
+  <!--Fila 1  -->
+  <div class="py-4">
+    <div
+      class="marquee flex w-mx font-mono text-[13.5px] uppercase tracking-[0.12em] text-muted"
+    >
+      {
+        [0, 1].map(() => (
+          <div class="flex shrink-0 gap-10 pr-10" aria-hidden="true">
+            {rowTop.map((item) => (
+              <span class="flex item-center gap-10">
+                {item}
+                <span class="text-acc">✦</span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+  <!-- Fila 2 -->
+  <div class="border-t border-line py-4">
+    <div
+      class="marquee marquee--reverse flex w-max font-mono text-[13.5px] uppercase tracking-[0.12em] text-dim"
+    >
+      {
+        [0, 1].map(() => (
+          <div class="flex shrink-0 gap-10 pr-10" aria-hidden="true">
+            {rowBottom.map((item) => (
+              <span class="flex items-center gap-10">
+                {item}
+                <span class="text-acc">✦</span>
+              </span>
+            ))}
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <style>
+    .marquee {
+      animation: marquee 34s linear infinite;
+    }
+    .marquee--reverse {
+      animation-direction: reverse;
+      animation-duration: 42s;
+    }
+    @keyframes marquee {
+      to {
+        transform: translateX(-50%);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .marquee {
+        animation: none;
+      }
+    }
+  </style>
+</div>
