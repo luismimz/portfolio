@@ -36,7 +36,7 @@ const stats = [
   ></canvas>
 
   <!-- Columna izquierda -->
-  <div class="relative z-3 flex flex-col gap-7">
+  <div class="relative z-3 flex flex-col gap-7" data-reveal data-stagger>
     <div
       class="flex items-center gap-3 font-mono text-[11.5px] uppercase tracking-[0.15em] text-muted"
     >
@@ -126,7 +126,7 @@ const stats = [
             <img
               src={portraitUrl}
               alt="Luis Miguel Montalván"
-              class="relative h-full w-full object-cover filter-[grayscale(1)_contrast(1.06)]"
+              class="relative h-full w-full object-cover grayscale contrast-[1.06] saturate-[.55] brightness-[.88]"
             />
           )
         }
@@ -233,8 +233,17 @@ const stats = [
       const n = parseInt(full, 16); // convertimos el color a un número entero
       return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; // extraemos los componentes rojo, verde y azul
     };
-    const fg = hexToRgb(css.getPropertyValue("--color-fg")); // color de primer plano (texto)
-    const acc = hexToRgb(css.getPropertyValue("--color-acc")); // color de acento (verde)
+    let fg: [number, number, number];
+    let acc: [number, number, number];
+
+    const readColors = () => {
+      const css = getComputedStyle(document.documentElement);
+      fg = hexToRgb(css.getPropertyValue("--color-fg"));
+      acc = hexToRgb(css.getPropertyValue("--color-acc"));
+    };
+    readColors();
+    window.addEventListener("themechange", readColors);
+
     //--geometria de la regilla --
     const CELL = 20; // tamaño de celda en px
     const dpr = Math.min(window.devicePixelRatio || 1, 2); // limitar a 2 para no sobrecargar

@@ -43,4 +43,62 @@
       /* scroll-behavior: auto !important; */
     }
   }
+    /* Reveal al hacer scroll — solo con JS activo */
+  .js [data-reveal]:not([data-stagger]),
+  .js [data-reveal][data-stagger] > * {
+    opacity: 0;
+    transform: translateY(40px) scale(0.985);
+    filter: blur(8px);
+    transition:
+      opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1),
+      transform 1s cubic-bezier(0.19, 1, 0.22, 1),
+      filter 0.9s ease;
+  }
+  .js [data-reveal].is-visible,
+  .js [data-reveal][data-stagger] > .is-visible {
+    opacity: 1;
+    transform: none;
+    filter: none;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .js [data-reveal]:not([data-stagger]),
+    .js [data-reveal][data-stagger] > * {
+      opacity: 1;
+      transform: none;
+      filter: none;
+    }
+  }
+}
+/* --- Tema claro: forzado por el usuario --- */
+:root[data-theme="light"] {
+  color-scheme: light;
+  --color-bg: #f5f3ed;
+  --color-fg: #15150f;
+  --color-muted: #5f5d55;
+  --color-dim: #736f65;
+  --color-line: rgba(21, 21, 15, 0.14);
+  --color-card: #fcfbf6;
+  --color-card-2: #ece9e0;
+  --color-acc: #1b1b12;
+  --color-ink: #f7f5f0;
+}
+
+/* --- Tema claro: por el sistema, si el usuario no ha forzado oscuro --- */
+@media (prefers-color-scheme: light) {
+  :root:not([data-theme="dark"]) {
+    color-scheme: light;
+    --color-bg: #f5f3ed;
+    --color-fg: #15150f;
+    --color-muted: #5f5d55;
+    --color-dim: #736f65;
+    --color-line: rgba(21, 21, 15, 0.14);
+    --color-card: #fcfbf6;
+    --color-card-2: #ece9e0;
+    --color-acc: #1b1b12;
+    --color-ink: #f7f5f0;
+  }
+}
+
+:root {
+  color-scheme: dark;
 }

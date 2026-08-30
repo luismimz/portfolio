@@ -11,7 +11,7 @@ const links = [
 <nav
   class="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-5 border-b border-line bg-bg/70 px-7 py-4 backdrop-blur-md"
 >
-  <a href="#top" class="flex items-center gap-2.5 text-fg">
+  <a data-magnet href="#top" class="flex items-center gap-2.5 text-fg">
     <span class="dot h-2 w-2 rounded-full bg-acc"></span>
     <span class="font-mono text-[12.5px] tracking-wide">luismontalvan.com</span>
   </a>
@@ -21,6 +21,7 @@ const links = [
     {
       links.map((l) => (
         <a
+          data-magnet
           href={l.href}
           data-navlink={l.href.slice(1)}
           class="text-muted transition-colors hover:text-fg data-[active=true]:text-fg"
@@ -29,7 +30,36 @@ const links = [
         </a>
       ))
     }
+    <div
+      class="flex items-center gap-0.5 rounded-full border border-line p-[3px]"
+    >
+      <button
+        type="button"
+        data-set-theme="light"
+        title="Modo claro"
+        class="grid h-5.75 w-7.5 place-items-center rounded-full text-xs text-muted data-[active=true]:bg-acc data-[active=true]:text-ink"
+      >
+        ☀
+      </button>
+      <button
+        type="button"
+        data-set-theme="system"
+        title="Según el sistema"
+        class="grid h-5.75 w-7.5 place-items-center rounded-full font-mono text-[9.5px] text-muted data-[active=true]:bg-acc data-[active=true]:text-ink"
+      >
+        AUTO
+      </button>
+      <button
+        type="button"
+        data-set-theme="dark"
+        title="Modo oscuro"
+        class="grid h-5.75 w-7.5 place-items-center rounded-full text-xs text-muted data-[active=true]:bg-acc data-[active=true]:text-ink"
+      >
+        ☾
+      </button>
+    </div>
     <a
+      data-magnet
       href="#contacto"
       class="rounded-full border border-acc px-4 py-2 text-acc transition-colors hover:bg-acc hover:text-ink"
     >
@@ -85,4 +115,42 @@ const links = [
     { rootMargin: "-40% 0px -55% 0px" },
   );
   document.querySelectorAll("section[id]").forEach((s) => observer.observe(s));
+  // ---- Cambio de tema ----
+  const root = document.documentElement;
+  const THEME_KEY = "lmm-theme";
+
+  const currentTheme = () => {
+    try {
+      return localStorage.getItem(THEME_KEY) ?? "system";
+    } catch {
+      return "system";
+    }
+  };
+
+  const applyTheme = (mode: string) => {
+    if (mode === "light" || mode === "dark") {
+      root.dataset.theme = mode;
+    } else {
+      delete root.dataset.theme; // "system": sin atributo
+    }
+    try {
+      localStorage.setItem(THEME_KEY, mode);
+    } catch {}
+
+    // botón activo
+    document.querySelectorAll<HTMLElement>("[data-set-theme]").forEach((b) => {
+      b.dataset.active = String(b.dataset.setTheme === mode);
+    });
+
+    // avisa a quien pinte con los colores (el canvas del Hero)
+    window.dispatchEvent(new CustomEvent("themechange"));
+  };
+
+  document
+    .querySelectorAll<HTMLButtonElement>("[data-set-theme]")
+    .forEach((b) => {
+      b.addEventListener("click", () => applyTheme(b.dataset.setTheme!));
+    });
+
+  applyTheme(currentTheme()); // sincroniza el switch al cargar
 </script>

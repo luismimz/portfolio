@@ -14,7 +14,11 @@ const stats = [
 ---
 
 <section id="antes-despues" class="mx-auto max-w-375 px-7 pb-10 pt-26">
-  <div class="mb-8.5 flex flex-wrap items-end justify-between gap-8.5">
+  <div
+    class="mb-8.5 flex flex-wrap items-end justify-between gap-8.5"
+    data-reveal
+    data-stagger
+  >
     <div class="flex flex-col gap-3">
       <span
         class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-acc"
@@ -34,6 +38,7 @@ const stats = [
   </div>
   <div
     data-compare
+    data-reveal
     class="relative aspect-[16/8.4] cursor-ew-resize touch-none select-none overflow-hidden border border-line bg-card-2"
   >
     <!-- DESPUÉS (capa de fondo) -->
@@ -64,7 +69,7 @@ const stats = [
             class="h-full w-full object-cover object-top saturate-[.55] brightness-[.88]"
           />
         ) : (
-          <div class="absolute inset-0 bg-[repeating-linear-gradient(45deg,var(--color-card-2)_0_10px,var(--color-card)_10px_20px)] filter-[saturate(0.55)_brightness(0.88)]" />
+          <div class="absolute inset-0 bg-[repeating-linear-gradient(45deg,var(--color-card-2)_0_10px,var(--color-card)_10px_20px)] saturate-[.55] brightness-[.88] grayscale contrast-[1.06]" />
         )
       }
     </div>
@@ -95,6 +100,8 @@ const stats = [
   </div>
 
   <div
+    data-reveal
+    data-stagger
     class="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-px border border-t-0 border-line bg-line"
   >
     {

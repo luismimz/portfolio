@@ -4,7 +4,11 @@ import SkillBar from "./SkillBar.astro";
 ---
 
 <section id="stack" class="mx-auto max-w-375 px-7 pb-10 pt-26">
-  <div class="mb-10 flex flex-wrap items-end justify-between gap-7.5">
+  <div
+    data-reveal
+    data-stagger
+    class="mb-10 flex flex-wrap items-end justify-between gap-7.5"
+  >
     <h2
       class="m-0 text-[clamp(30px,4.2vw,58px)] font-medium leading-none tracking-[-0.04em]"
     >
@@ -17,6 +21,8 @@ import SkillBar from "./SkillBar.astro";
   </div>
 
   <div
+    data-reveal
+    data-staggers
     class="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-x-15.5 gap-y-9.5"
   >
     {

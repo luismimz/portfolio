@@ -1,0 +1,110 @@
+<div
+  data-cursor
+  class="pointer-events-none fixed left-0 top-0 z-95 h-6 w-6 -translate-x-1/2 -translate-y-1/2 rounded-full border border-acc opacity-0 mix-blend-difference transition-[width,height,opacity,background] duration-200"
+>
+</div>
+
+<script>
+  const reveals = document.querySelectorAll<HTMLElement>("[data-reveal]");
+
+  const io = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        const el = entry.target as HTMLElement;
+
+        // Si es stagger, animamos los hijos; si no, el elemento entero
+        const items = el.hasAttribute("data-stagger")
+          ? (Array.from(el.children) as HTMLElement[])
+          : [el];
+
+        items.forEach((item, i) => {
+          item.style.transitionDelay = `${i * 80}ms`; // cada hijo 80ms después
+          item.classList.add("is-visible");
+        });
+
+        io.unobserve(el); // una sola vez
+      }
+    },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.06 },
+  );
+
+  reveals.forEach((el) => io.observe(el));
+</script>
+<script>
+  const fine = window.matchMedia("(pointer: fine)").matches;
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Todo esto es adorno: solo con ratón real y sin reduced-motion
+  if (fine && !reduced) {
+    // ---- Tilt: inclina la tarjeta hacia el cursor ----
+    document.querySelectorAll<HTMLElement>("[data-tilt]").forEach((card) => {
+      card.addEventListener("pointermove", (e) => {
+        const r = card.getBoundingClientRect();
+        const x = (e.clientX - r.left) / r.width - 0.5; // -0.5 … 0.5
+        const y = (e.clientY - r.top) / r.height - 0.5;
+        card.style.transition =
+          "transform .16s ease-out, border-color .35s ease";
+        card.style.transform = `perspective(950px) rotateX(${-y * 5}deg) rotateY(${x * 5}deg) translateY(-5px)`;
+      });
+      card.addEventListener("pointerleave", () => {
+        card.style.transition =
+          "transform .75s cubic-bezier(.19,1,.22,1), border-color .35s ease";
+        card.style.transform =
+          "perspective(950px) rotateX(0) rotateY(0) translateY(0)";
+      });
+    });
+
+    // ---- Magnet: el botón sigue un poco al cursor ----
+    const K = 0.28;
+    document.querySelectorAll<HTMLElement>("[data-magnet]").forEach((el) => {
+      el.addEventListener("pointermove", (e) => {
+        const r = el.getBoundingClientRect();
+        const dx = (e.clientX - (r.left + r.width / 2)) * K;
+        const dy = (e.clientY - (r.top + r.height / 2)) * K;
+        el.style.transition = "transform .18s ease-out";
+        el.style.transform = `translate(${dx.toFixed(1)}px, ${dy.toFixed(1)}px)`;
+      });
+      el.addEventListener("pointerleave", () => {
+        el.style.transition = "transform .6s cubic-bezier(.19,1,.22,1)";
+        el.style.transform = "translate(0, 0)";
+      });
+    });
+
+    // ---- Cursor custom ----
+    const dot = document.querySelector<HTMLElement>("[data-cursor]");
+    if (dot) {
+      let x = window.innerWidth / 2;
+      let y = window.innerHeight / 2;
+      let tx = x;
+      let ty = y;
+
+      const loop = () => {
+        requestAnimationFrame(loop);
+        x += (tx - x) * 0.16; // lerp, como en el Hero
+        y += (ty - y) * 0.16;
+        dot.style.left = `${x}px`;
+        dot.style.top = `${y}px`;
+      };
+      loop();
+
+      window.addEventListener(
+        "pointermove",
+        (e) => {
+          tx = e.clientX;
+          ty = e.clientY;
+          dot.style.opacity = "1";
+          const hit = (e.target as Element).closest(
+            "a, button, [data-tilt], [data-compare]",
+          );
+          dot.style.width = dot.style.height = hit ? "56px" : "24px";
+          dot.style.background = hit ? "var(--color-acc)" : "transparent";
+        },
+        { passive: true },
+      );
+      document.addEventListener("pointerleave", () => {
+        dot.style.opacity = "0";
+      });
+    }
+  }
+</script>

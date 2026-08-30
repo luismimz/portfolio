@@ -5,11 +5,12 @@ import TimelineRow from "./TimelineRow.astro";
 
 <section id="trayectoria" class="mx-auto max-w-375 px-7 pb-10 pt-26">
   <h2
+    data-reveal
     class="m-0 mb-10 text-[clamp(30px,4.2vw,58px)] font-medium leading-none tracking-[-0.04em]"
   >
     Experiencia
   </h2>
-  <div class="flex flex-col border-b border-line">
+  <div data-reveal data-stagger class="flex flex-col border-b border-line">
     {
       experience.map((entry, i) => (
         <TimelineRow entry={entry} accent={i === 0} />
