@@ -1,0 +1,342 @@
+---
+interface Props {
+  portraitUrl?: string;
+}
+const { portraitUrl } = Astro.props;
+
+const social = [
+  { href: "https://github.com/luismimz", label: "GitHub ↗" },
+  {
+    href: "https://www.linkedin.com/in/luis-miguel-montalv%C3%A1n-a0b09a42/",
+    label: "LinkedIn ↗",
+  },
+  { href: "https://www.instagram.com/luismi.mz", label: "Instagram ↗" },
+];
+
+const stats = [
+  { value: "3", suffix: "", count: 3, label: "Webs en producción" },
+  { value: "6", suffix: "+", count: 6, label: "Años con WordPress" },
+  {
+    value: "SMIR + DAM",
+    suffix: "",
+    count: null,
+    label: "Titulaciones oficiales",
+  },
+  { value: "1", suffix: "", count: null, label: "Servidor dedicado propio" },
+];
+---
+
+<section
+  id="top"
+  data-hero
+  class="relative mx-auto grid max-w-375 items-center gap-15 px-7 pb-17.5 pt-32.5 max-lg:grid-cols-1 lg:min-h-screen lg:grid-cols-[1.05fr_0.95fr]"
+>
+  <!-- Lienzo para el efecto matrix en 2D, lluvia de 1 y 0 se ilumina alrededor del cursor (se rellena en el Paso 6d) -->
+  <canvas data-hero-canvas class="absolute inset-0 z-0 h-full w-full opacity-90"
+  ></canvas>
+
+  <!-- Columna izquierda -->
+  <div class="relative z-3 flex flex-col gap-7">
+    <div
+      class="flex items-center gap-3 font-mono text-[11.5px] uppercase tracking-[0.15em] text-muted"
+    >
+      <span class="h-px w-7 bg-acc"></span>
+      <span>Fullstack junior · DAM Ilerna · Disponible</span>
+    </div>
+
+    <h1
+      class="m-0 text-[clamp(44px,6.6vw,104px)] font-medium leading-[0.88] tracking-tight text-balance"
+    >
+      Luis Miguel <span class="tracking-wide">Montalván</span>
+    </h1>
+
+    <p class="m-0 max-w-140 leading-[1.55] text-fg/75 text-pretty">
+      Escribo el código y administro la máquina donde corre.
+      <em class="font-serif italic text-fg">TypeScript, NestJS, PHP y Java</em>
+      — más DNS, correo, firewall y despliegues en mi propio servidor dedicado.
+    </p>
+
+    <div class="flex flex-wrap items-center gap-2.75">
+      <a
+        href="#trabajos"
+        class="inline-flex items-center gap-2.5 rounded-full bg-acc px-6 py-3.5 text-[15px] font-semibold text-ink"
+      >
+        Ver trabajos en producción →
+      </a>
+      <a
+        href="#contacto"
+        class="inline-flex items-center gap-2.5 rounded-full border border-line px-6 py-3.5 text-fg transition-colors hover:border-fg"
+      >
+        Descargar CV
+      </a>
+    </div>
+
+    <div
+      class="flex flex-wrap items-center gap-4.5 pt-1 font-mono text-[11.5px] tracking-[0.06em]"
+    >
+      {
+        social.map((s) => (
+          <a
+            href={s.href}
+            target="_blank"
+            rel="noopener"
+            class="text-muted transition-colors hover:text-fg"
+          >
+            {s.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <div
+      class="mt-3 grid max-w-155 grid-cols-[repeat(auto-fit,minmax(126px,1fr))] gap-px border border-line bg-line"
+    >
+      {
+        stats.map((s) => (
+          <div class="bg-bg px-4 py-4.25">
+            <div
+              class="text-[29px] font-semibold tracking-[-0.03em]"
+              data-count={s.count ?? undefined}
+              data-suffix={s.suffix || undefined}
+            >
+              {s.count !== null ? "0" : s.value}
+            </div>
+            <div class="mt-1.25 font-mono text-[10px] uppercase tracking-widest text-muted">
+              {s.label}
+            </div>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+
+  <!-- Columna derecha: retrato -->
+  <div class="relative z-2 grid min-h-[60svh] place-items-center">
+    <div class="relative aspect-4/5 w-[min(100%,470px)]">
+      <div
+        class="absolute inset-0 grid place-items-center overflow-hidden rounded border border-line bg-card-2"
+      >
+        <span class="absolute font-mono text-[44px] tracking-[0.06em] text-dim"
+          >LM</span
+        >
+        {
+          portraitUrl && (
+            <img
+              src={portraitUrl}
+              alt="Luis Miguel Montalván"
+              class="relative h-full w-full object-cover filter-[grayscale(1)_contrast(1.06)]"
+            />
+          )
+        }
+      </div>
+
+      <div
+        class="absolute -bottom-8.5 left-0 flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-dim"
+      >
+        <span>Pasa el ratón</span>
+      </div>
+
+      <div
+        class="absolute -right-3 bottom-6 z-5 flex items-center gap-2 rounded-full border border-acc bg-bg px-4 py-2.5 font-mono text-[10.5px] uppercase tracking-[0.1em] text-acc"
+      >
+        <a
+          href="https://certificates.mooc.fi/validate/rv0jtbu05qo"
+          target="_blank"
+          rel="noopener"
+          class="text-inherit"
+        >
+          Java I · MOOC certificado ↗
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <div
+    class="scrollhint absolute bottom-5.5 left-7 z-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim"
+  >
+    Scroll ↓
+  </div>
+</section>
+
+<style>
+  .scrollhint {
+    animation: floaty 3.6s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%,
+    100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-9px);
+    }
+  }
+</style>
+<script>
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  function countUp(el: HTMLElement) {
+    const target = Number(el.dataset.count);
+    const suffix = el.dataset.suffix ?? "";
+    if (Number.isNaN(target)) return;
+
+    if (reduced) {
+      el.textContent = `${target}${suffix}`;
+      return;
+    }
+
+    const duration = 1100;
+    const start = performance.now();
+
+    function tick(now: number) {
+      const t = Math.min((now - start) / duration, 1);
+      // easeOutCubic: rápido al principio, frena al final
+      const eased = 1 - Math.pow(1 - t, 3);
+      el.textContent = `${Math.round(target * eased)}${suffix}`;
+      if (t < 1) requestAnimationFrame(tick);
+    }
+
+    requestAnimationFrame(tick);
+  }
+
+  const nums = document.querySelectorAll<HTMLElement>(
+    "[data-hero] [data-count]",
+  );
+
+  const observer = new IntersectionObserver(
+    (entries, obs) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        countUp(entry.target as HTMLElement);
+        obs.unobserve(entry.target); // que corra una sola vez
+      }
+    },
+    { threshold: 0.6 },
+  );
+
+  nums.forEach((n) => observer.observe(n));
+</script>
+<script>
+  const canvas =
+    document.querySelector<HTMLCanvasElement>("[data-hero-canvas]"); // lienzo para el efecto matrix en 2D, lluvia de 1 y 0 se ilumina alrededor del cursor
+  const ctx = canvas?.getContext("2d"); // contexto 2D del lienzo
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // si el usuario prefiere reducir la animación, no dibujamos nada
+  if (canvas && ctx && !reduced) {
+    // -Colores: los leemos de los css variables definidas en global.css --
+    const css = getComputedStyle(document.documentElement); // obtenemos los estilos computados del documento
+    const hexToRgb = (hex: string): [number, number, number] => {
+      // función para convertir un color hexadecimal a RGB
+      const s = hex.trim().replace("#", ""); // quitamos el símbolo # y los espacios en blanco
+      const full = s.length === 3 ? [...s].map((c) => c + c).join("") : s; // si es un color corto (3 dígitos), lo expandimos a 6 dígitos
+      const n = parseInt(full, 16); // convertimos el color a un número entero
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255]; // extraemos los componentes rojo, verde y azul
+    };
+    const fg = hexToRgb(css.getPropertyValue("--color-fg")); // color de primer plano (texto)
+    const bg = hexToRgb(css.getPropertyValue("--color-bg")); // color de fondo
+    const acc = hexToRgb(css.getPropertyValue("--color-acc")); // color de acento (verde)
+    //--geometria de la regilla --
+    const CELL = 20; // tamaño de celda en px
+    const dpr = Math.min(window.devicePixelRatio || 1, 2); // limitar a 2 para no sobrecargar
+    let w = 0,
+      h = 0,
+      cols = 0,
+      rows = 0; // ancho, alto, columnas y filas de la regilla
+    let glyphs: string[] = []; // array de caracteres que se dibujarán en la regilla - 1/0 de cada celda
+    let drops: number[] = []; // array de posiciones (filas) para cada columna - cabeza de la lluvia de 1 y 0
+    const build = () => {
+      const r = canvas.getBoundingClientRect(); // obtenemos el tamaño del lienzo en px
+      w = r.width;
+      h = r.height;
+      if (!w || !h) return;
+      //El canvas necesita 2 tamaños: el css (w/h) y el real (w*dpr/h*dpr) para que se vea nítido en pantallas retina
+      canvas.width = Math.round(w * dpr); // tamaño real del lienzo en px ancho
+      canvas.height = Math.round(h * dpr); // tamaño real del lienzo en px alto
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0); // escalamos el contexto para que dibuje en px reales
+      cols = Math.ceil(w / CELL); // número de columnas de la regilla
+      rows = Math.ceil(h / CELL); // número de filas de la regilla
+      glyphs = Array.from({ length: cols * rows }, () =>
+        Math.random() > 0.5 ? "1" : "0",
+      ); // generamos un array de caracteres aleatorios (1 o 0) para cada celda
+      drops = Array.from({ length: cols }, () =>
+        Math.floor(Math.random() * rows),
+      ); // generamos un array de posiciones aleatorias (filas) para cada columna
+    };
+    build(); // construimos la regilla al cargar la página
+    window.addEventListener("resize", build); // reconstruimos la regilla al redimensionar la ventana
+    // -- Puntero con suave efecto de iluminación alrededor del cursor --
+    let px = 0.5,
+      py = 0.5; // posición del puntero en coordenadas relativas (0-1) posicion suavizada (0..1)
+    let tpx = 0.5,
+      tpy = 0.5; // objetivo real del puntero en coordenadas relativas (0-1)
+    let inside = false; // si el puntero está dentro del lienzo
+    let tick = 0; // contador de frames
+    window.addEventListener(
+      "pointermove",
+      (e) => {
+        const r = canvas.getBoundingClientRect();
+        tpx = (e.clientX - r.left) / r.width; // posición relativa del puntero en x
+        tpy = (e.clientY - r.top) / r.height; // posición relativa del puntero en y
+        inside = tpx > -0.15 && tpx < 1.15 && tpy > -0.15 && tpy < 1.15; // si el puntero está dentro del lienzo (con margen)
+      },
+      { passive: true },
+    );
+    // -- Animación de la lluvia de 1 y 0 --Bucle renderizado --
+    const frame = () => {
+      requestAnimationFrame(frame); // pedimos el siguiente frame
+      if (!w || !h) return; // si no hay tamaño, no dibujamos
+      tick++; // incrementamos el contador de frames
+      // Lerp: acercamos px al objetivo un 8% por frame, estilo suave
+      px += (tpx - px) * 0.08;
+      py += (tpy - py) * 0.08;
+      //cada 3 frames: avanzamos la lluvia y mutamos algunos caracteres
+      if (tick % 3 === 0) {
+        for (let c = 0; c < cols; c++) {
+          drops[c] += 0.3 + (c % 7) * 0.04; // cada columna cae a diferente velocidad
+          if (drops[c] > rows + 8) drops[c] = -Math.random() * 10;
+        }
+        for (let k = 0; k < 24; k++) {
+          const i = Math.floor(Math.random() * glyphs.length);
+          glyphs[i] = Math.random() > 0.5 ? "1" : "0";
+        }
+      }
+      const scroll = window.scrollY * 0.0015; // ligera ondulacion al hacer scroll
+      const cx = px * w;
+      const cy = py * h;
+      const R = Math.max(w, h) * 0.32; // radio del halo del cursor
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.font = "500 11px 'JetBrains Mono', monospace";
+      ctx.textBaseline = "top";
+
+      for (let c = 0; c < cols; c++) {
+        const x = c * CELL + 2;
+        const head = drops[c] + Math.sin(c * 0.6 + scroll) * 1.6;
+
+        for (let r = 0; r < rows; r++) {
+          const trail = head - r; // distancia de esta celda al cabezal
+          if (trail < 0 || trail > 9) continue; // solo pintamos la estela (9 celdas)
+
+          const fade = 1 - trail / 9;
+          const y = r * CELL;
+          let alpha = fade * 0.07; // reposo: casi invisible
+          let col = fg;
+
+          if (inside) {
+            const dx = x - cx;
+            const dy = y - cy;
+            const near = 1 - Math.min(1, Math.hypot(dx, dy) / R);
+            if (near > 0) {
+              alpha += near * near * fade * 0.72; // cerca del cursor: brilla
+              col = acc; // y en color de acento
+            }
+          }
+
+          if (alpha < 0.02) continue;
+          ctx.fillStyle = `rgba(${col[0]},${col[1]},${col[2]},${Math.min(0.92, alpha).toFixed(3)})`;
+          ctx.fillText(glyphs[r * cols + c] ?? "0", x, y);
+        }
+      }
+    };
+    frame();
+  }
+</script>
