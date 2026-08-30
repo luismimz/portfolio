@@ -1,0 +1,181 @@
+---
+interface Props {
+  beforeUrl?: string;
+  afterUrl?: string;
+}
+const { beforeUrl, afterUrl } = Astro.props;
+
+const stats = [
+  { value: "< 1 s", label: "Carga tras la migración" },
+  { value: "URLs intactas", label: "Sin perder posiciones" },
+  { value: "Next.js", label: "Render en servidor" },
+  { value: "Autoalojado", label: "Mi servidor, mi despliegue" },
+];
+---
+
+<section id="antes-despues" class="mx-auto max-w-375 px-7 pb-10 pt-26">
+  <div class="mb-8.5 flex flex-wrap items-end justify-between gap-8.5">
+    <div class="flex flex-col gap-3">
+      <span
+        class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-acc"
+      >
+        Caso destacado · tiamariavallecas.com
+      </span>
+      <h2
+        class="m-0 text-[clamp(30px,4.2vw,58px)] font-medium leading-[0.98] tracking-[-0.04em]"
+      >
+        De WordPress a Next.js
+      </h2>
+    </div>
+    <p class="m-0 max-w-95 text-[14.5px] leading-[1.6] text-muted text-pretty">
+      Arrastra la barra para comparar. Izquierda, el sitio anterior en
+      WordPress; derecha, la versión actual en Next.js.
+    </p>
+  </div>
+  <div
+    data-compare
+    class="relative aspect-[16/8.4] cursor-ew-resize touch-none select-none overflow-hidden border border-line bg-card-2"
+  >
+    <!-- DESPUÉS (capa de fondo) -->
+    <div class="absolute inset-0">
+      {
+        afterUrl ? (
+          <img
+            src={afterUrl}
+            alt="tiamariavallecas.com en Next.js"
+            class="h-full w-full object-cover object-top"
+          />
+        ) : (
+          <div class="absolute inset-0 bg-[repeating-linear-gradient(135deg,var(--color-card-2)_0_10px,var(--color-card)_10px_20px)]" />
+        )
+      }
+    </div>
+    <!-- ANTES (capa recortada) -->
+    <div
+      data-before
+      class="absolute inset-0"
+      style="clip-path: inset(0 50% 0 0)"
+    >
+      {
+        beforeUrl ? (
+          <img
+            src={beforeUrl}
+            alt="tiamariavallecas.com anterior en WordPress"
+            class="h-full w-full object-cover object-top filter-[saturate(0.55)_brightness(0.88)]"
+          />
+        ) : (
+          <div class="absolute inset-0 bg-[repeating-linear-gradient(45deg,var(--color-card-2)_0_10px,var(--color-card)_10px_20px)] filter-[saturate(0.55)_brightness(0.88)]" />
+        )
+      }
+    </div>
+
+    <!-- Tirador -->
+    <div
+      data-handle
+      class="pointer-events-none absolute inset-y-0 left-1/2 z-4 w-0.5 bg-acc"
+    >
+      <div
+        class="absolute left-1/2 top-1/2 grid h-12 w-12 -translate-x-1/2 -translate-y-1/2 place-items-center rounded-full border border-acc bg-bg font-mono text-xs text-acc"
+      >
+        ⇆
+      </div>
+    </div>
+
+    <!-- Etiquetas de esquina -->
+    <span
+      class="absolute left-4 top-3.5 z-5 bg-bg/80 px-2.75 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-muted"
+    >
+      Antes · WordPress
+    </span>
+    <span
+      class="absolute right-4 top-3.5 z-5 bg-bg/80 px-2.75 py-1.5 font-mono text-[10px] uppercase tracking-[0.12em] text-acc"
+    >
+      Después · Next.js
+    </span>
+  </div>
+
+  <div
+    class="grid grid-cols-[repeat(auto-fit,minmax(190px,1fr))] gap-px border border-t-0 border-line bg-line"
+  >
+    {
+      stats.map((s) => (
+        <div class="bg-bg px-5.5 py-5">
+          <div class="text-[26px] font-semibold tracking-[-0.03em]">
+            {s.value}
+          </div>
+          <div class="mt-1.25 font-mono text-[10px] uppercase tracking-widest text-muted">
+            {s.label}
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  const box = document.querySelector<HTMLElement>("[data-compare]");
+  const before = box?.querySelector<HTMLElement>("[data-before]");
+  const handle = box?.querySelector<HTMLElement>("[data-handle]");
+
+  if (box && before && handle) {
+    const reduced = window.matchMedia(
+      "(prefers-reduced-motion: reduce)",
+    ).matches;
+
+    let pos = 50; // posición pintada (%)
+    let target = 50; // posición a la que queremos ir (%)
+    let raf = 0;
+    let dragging = false;
+
+    const render = () => {
+      raf = 0;
+      pos += (target - pos) * 0.22; // lerp, igual que en el Hero
+      before.style.clipPath = `inset(0 ${(100 - pos).toFixed(2)}% 0 0)`;
+      handle.style.left = `${pos.toFixed(2)}%`;
+      if (Math.abs(target - pos) > 0.2) raf = requestAnimationFrame(render);
+    };
+    const queue = () => {
+      if (!raf) raf = requestAnimationFrame(render);
+    };
+
+    const setFrom = (clientX: number) => {
+      const r = box.getBoundingClientRect();
+      target = Math.max(0, Math.min(100, ((clientX - r.left) / r.width) * 100));
+      queue();
+    };
+
+    box.addEventListener("pointerdown", (e) => {
+      dragging = true;
+      box.setPointerCapture?.(e.pointerId);
+      setFrom(e.clientX);
+    });
+    box.addEventListener("pointermove", (e) => {
+      if (dragging || e.pointerType === "mouse") setFrom(e.clientX);
+    });
+    box.addEventListener("pointerup", () => (dragging = false));
+    box.addEventListener("pointerleave", () => {
+      if (!dragging) {
+        target = 50; // al salir, vuelve al centro
+        queue();
+      }
+    });
+
+    // Empujoncito la primera vez que aparece, para que se vea que se arrastra
+    if (!reduced) {
+      const io = new IntersectionObserver(
+        (entries) => {
+          for (const e of entries) {
+            if (!e.isIntersecting) continue;
+            io.disconnect();
+            target = 74;
+            queue();
+            setTimeout(() => ((target = 28), queue()), 680);
+            setTimeout(() => ((target = 50), queue()), 1420);
+          }
+        },
+        { threshold: 0.4 },
+      );
+      io.observe(box);
+    }
+  }
+</script>
