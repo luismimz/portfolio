@@ -1,5 +1,6 @@
 ---
 const links = [
+  { href: "#top", label: "Inicio" },
   { href: "#trabajos", label: "Trabajos" },
   { href: "#antes-despues", label: "Antes/Después" },
   { href: "#trayectoria", label: "Experiencia" },
@@ -9,82 +10,78 @@ const links = [
 ---
 
 <nav
-  class="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-5 border-b border-line bg-bg/70 px-7 py-4 backdrop-blur-md"
+  class="fixed inset-x-0 top-0 z-50 flex items-center justify-between gap-5 border-b border-line bg-bg/70 px-4 py-4 backdrop-blur-md md:px-7"
 >
   <a data-magnet href="#top" class="flex items-center gap-2.5 text-fg">
     <span class="dot h-2 w-2 rounded-full bg-acc"></span>
     <span class="font-mono text-[12.5px] tracking-wide">luismontalvan.com</span>
   </a>
-  <div
-    class="flex items-center gap-5 font-mono text-[11.5px] uppercase tracking-[0.09em]"
-  >
-    {
-      links.map((l) => (
-        <a
-          data-magnet
-          href={l.href}
-          data-navlink={l.href.slice(1)}
-          class="text-muted transition-colors hover:text-fg data-[active=true]:text-fg"
-        >
-          {l.label}
-        </a>
-      ))
-    }
+
+  <div class="flex items-center gap-5">
+    <!-- Links: solo escritorio -->
     <div
-      class="flex items-center gap-0.5 rounded-full border border-line p-[3px]"
+      class="hidden items-center gap-5 font-mono text-[11.5px] uppercase tracking-[0.09em] lg:flex"
+    >
+      {
+        links.map((l) => (
+          <a
+            href={l.href}
+            data-navlink={l.href.slice(1)}
+            class="text-muted transition-colors hover:text-fg data-[active=true]:text-fg"
+          >
+            {l.label}
+          </a>
+        ))
+      }
+    </div>
+
+    <!-- Interruptor de tema: SIEMPRE visible -->
+    <div
+      class="flex items-center gap-0.5 rounded-full border border-line p-0.75"
     >
       <button
         type="button"
         data-set-theme="light"
         title="Modo claro"
         class="grid h-5.75 w-7.5 place-items-center rounded-full text-xs text-muted data-[active=true]:bg-acc data-[active=true]:text-ink"
+        >☀</button
       >
-        ☀
-      </button>
       <button
         type="button"
         data-set-theme="system"
         title="Según el sistema"
         class="grid h-5.75 w-7.5 place-items-center rounded-full font-mono text-[9.5px] text-muted data-[active=true]:bg-acc data-[active=true]:text-ink"
+        >AUTO</button
       >
-        AUTO
-      </button>
       <button
         type="button"
         data-set-theme="dark"
         title="Modo oscuro"
         class="grid h-5.75 w-7.5 place-items-center rounded-full text-xs text-muted data-[active=true]:bg-acc data-[active=true]:text-ink"
+        >☾</button
       >
-        ☾
-      </button>
     </div>
+
+    <!-- Contacto: solo escritorio (en móvil está en el dock) -->
     <a
       data-magnet
       href="#contacto"
-      class="rounded-full border border-acc px-4 py-2 text-acc transition-colors hover:bg-acc hover:text-ink"
+      class="hidden rounded-full border border-acc px-4 py-2 text-acc transition-colors hover:bg-acc hover:text-ink lg:inline-block"
     >
-      Contacto</a
-    >
+      Contacto
+    </a>
   </div>
+
   <div
     data-progress
     class="absolute inset-x-0 -bottom-px h-0.5 origin-left scale-x-0 bg-acc"
   >
   </div>
 </nav>
+
 <style>
   .dot {
     animation: blink 2.6s steps(1) infinite;
-  }
-  @keyframes blink {
-    0%,
-    60% {
-      opacity: 1;
-    }
-    61%,
-    100% {
-      opacity: 0.15;
-    }
   }
 </style>
 <script>

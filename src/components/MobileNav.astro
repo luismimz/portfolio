@@ -1,0 +1,54 @@
+---
+const tabs = [
+  { href: "#top", icon: "◧", label: "Inicio", id: "top" },
+  { href: "#trabajos", icon: "▦", label: "Trabajos", id: "trabajos" },
+  { href: "#antes-despues", icon: "⇆", label: "Antes", id: "antes-despues" },
+  { href: "#trayectoria", icon: "◈", label: "Experiencia", id: "trayectoria" },
+  { href: "#contacto", icon: "✉", label: "Contacto", id: "contacto" },
+];
+---
+
+<nav
+  class="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+10px)] z-[80] flex justify-around gap-0.5 rounded-3xl border border-line bg-bg/80 px-2 py-[7px] shadow-[0_10px_30px_-10px_rgba(0,0,0,0.6)] backdrop-blur-xl lg:hidden"
+>
+  {
+    tabs.map((t) => (
+      <a
+        href={t.href}
+        data-tab={t.id}
+        class="flex min-h-12 flex-1 flex-col items-center justify-center gap-0.75 rounded-xl text-[10px] tracking-[0.02em] text-muted transition-colors data-[active=true]:bg-acc/15 data-[active=true]:text-acc"
+      >
+        <span class="text-[17px] leading-none">{t.icon}</span>
+        <span>{t.label}</span>
+      </a>
+    ))
+  }
+</nav>
+
+<script>
+  const tabs = Array.from(document.querySelectorAll<HTMLElement>("[data-tab]"));
+
+  if (tabs.length) {
+    const sync = () => {
+      const vh = window.innerHeight;
+      let best = tabs[0];
+      let bestTop = -Infinity;
+
+      for (const tab of tabs) {
+        const sec = document.getElementById(tab.dataset.tab!);
+        if (!sec) continue;
+        const top = sec.getBoundingClientRect().top;
+        // la sección cuyo borde superior está más abajo, pero ya pasado el 40% del alto
+        if (top <= vh * 0.4 && top > bestTop) {
+          bestTop = top;
+          best = tab;
+        }
+      }
+      tabs.forEach((t) => (t.dataset.active = String(t === best)));
+    };
+
+    sync();
+    window.addEventListener("scroll", sync, { passive: true });
+    window.addEventListener("resize", sync, { passive: true });
+  }
+</script>
