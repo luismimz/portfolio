@@ -1,0 +1,149 @@
+---
+import { certificates } from "../data/certificates";
+---
+
+<dialog
+  data-cert-dialog
+  aria-label="Galería de certificados"
+  class="m-auto w-[min(92vw,920px)] overflow-hidden rounded border border-line bg-card p-0 text-fg backdrop:bg-black/70 backdrop:backdrop-blur-sm"
+>
+  <div
+    class="flex items-center justify-between gap-4 border-b border-line px-5 py-3"
+  >
+    <div class="min-w-0">
+      <p data-cert-title class="m-0 truncate text-[15px] font-medium"></p>
+      <p data-cert-meta class="m-0 font-mono text-[11px] text-muted"></p>
+    </div>
+    <div class="flex shrink-0 items-center gap-2">
+      <a
+        data-cert-verify
+        hidden
+        target="_blank"
+        rel="noopener"
+        class="font-mono text-[11px] text-acc hover:underline"
+      >
+        Verificar ↗
+      </a>
+      <button
+        data-cert-close
+        type="button"
+        aria-label="Cerrar"
+        class="grid h-8 w-8 place-items-center rounded-full border border-line text-muted transition-colors hover:text-fg"
+      >
+        ✕
+      </button>
+    </div>
+  </div>
+
+  <div class="relative bg-card-2">
+    <img
+      data-cert-img
+      alt=""
+      class="mx-auto max-h-[64vh] w-full object-contain"
+    />
+    <button
+      data-cert-prev
+      type="button"
+      aria-label="Anterior"
+      class="absolute left-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-bg/80 text-fg backdrop-blur"
+    >
+      ‹
+    </button>
+    <button
+      data-cert-next
+      type="button"
+      aria-label="Siguiente"
+      class="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-full border border-line bg-bg/80 text-fg backdrop-blur"
+    >
+      ›
+    </button>
+  </div>
+
+  <div class="flex gap-2 overflow-x-auto border-t border-line p-3">
+    {
+      certificates.map((c, i) => (
+        <button
+          data-cert-thumb={i}
+          type="button"
+          class="shrink-0 border border-line opacity-40 transition-opacity data-[active=true]:opacity-100"
+        >
+          <img
+            src={c.image}
+            alt={c.title}
+            class="h-14 w-24 object-cover"
+            loading="lazy"
+          />
+        </button>
+      ))
+    }
+  </div>
+</dialog>
+
+<script>
+  import { certificates } from "../data/certificates";
+
+  const dialog =
+    document.querySelector<HTMLDialogElement>("[data-cert-dialog]");
+  const imgEl = dialog?.querySelector<HTMLImageElement>("[data-cert-img]");
+  const titleEl = dialog?.querySelector<HTMLElement>("[data-cert-title]");
+  const metaEl = dialog?.querySelector<HTMLElement>("[data-cert-meta]");
+  const verifyEl =
+    dialog?.querySelector<HTMLAnchorElement>("[data-cert-verify]");
+  const thumbs = dialog
+    ? [...dialog.querySelectorAll<HTMLElement>("[data-cert-thumb]")]
+    : [];
+
+  if (dialog && imgEl && titleEl && metaEl && verifyEl) {
+    let current = 0;
+
+    const show = (i: number) => {
+      current = (i + certificates.length) % certificates.length; // envuelve
+      const c = certificates[current];
+      imgEl.src = c.image;
+      imgEl.alt = `Certificado: ${c.title}`;
+      titleEl.textContent = c.title;
+      metaEl.textContent = `${c.issuer} · ${c.date}`;
+      verifyEl.hidden = !c.verifyUrl;
+      if (c.verifyUrl) verifyEl.href = c.verifyUrl;
+      thumbs.forEach((t, ti) => (t.dataset.active = String(ti === current)));
+    };
+
+    // abrir desde cualquier [data-cert-open="N"] de la página
+    document.querySelectorAll<HTMLElement>("[data-cert-open]").forEach((el) => {
+      el.addEventListener("click", () => {
+        show(Number(el.dataset.certOpen));
+        dialog.showModal();
+      });
+    });
+
+    dialog
+      .querySelector("[data-cert-close]")
+      ?.addEventListener("click", () => dialog.close());
+    dialog
+      .querySelector("[data-cert-prev]")
+      ?.addEventListener("click", () => show(current - 1));
+    dialog
+      .querySelector("[data-cert-next]")
+      ?.addEventListener("click", () => show(current + 1));
+    thumbs.forEach((t) =>
+      t.addEventListener("click", () => show(Number(t.dataset.certThumb))),
+    );
+
+    // clic fuera del contenido (en el backdrop) cierra
+    dialog.addEventListener("click", (e) => {
+      const r = dialog.getBoundingClientRect();
+      const outside =
+        e.clientX < r.left ||
+        e.clientX > r.right ||
+        e.clientY < r.top ||
+        e.clientY > r.bottom;
+      if (outside) dialog.close();
+    });
+
+    // flechas del teclado
+    dialog.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") show(current - 1);
+      if (e.key === "ArrowRight") show(current + 1);
+    });
+  }
+</script>

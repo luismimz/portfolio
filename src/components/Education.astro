@@ -1,8 +1,15 @@
 ---
 import { degrees, courses } from "../data/education";
+import { certificates } from "../data/certificates";
+import CertGallery from "./CertGallery.astro";
+
+const certIndex = new Map(certificates.map((c, i) => [c.slug, i]));
 ---
 
-<section id="formacion" class="mx-auto max-w-375 px-7 pb-10 pt-26">
+<section
+  id="formacion"
+  class="mx-auto max-w-375 px-4 md:px-7 pb-10 pt-26 max-md:pt-16"
+>
   <div
     data-reveal
     data-stagger
@@ -27,17 +34,21 @@ import { degrees, courses } from "../data/education";
   >
     {
       degrees.map((d) => {
-        const Tag = d.href ? "a" : "div";
+        const idx = d.cert ? certIndex.get(d.cert) : undefined;
+        const linked = idx !== undefined || Boolean(d.href);
+        const Tag = idx !== undefined ? "button" : d.href ? "a" : "div";
         return (
           <Tag
-            href={d.href}
-            target={d.href ? "_blank" : undefined}
-            rel={d.href ? "noopener" : undefined}
+            type={Tag === "button" ? "button" : undefined}
+            data-cert-open={idx}
+            href={Tag === "a" ? d.href : undefined}
+            target={Tag === "a" ? "_blank" : undefined}
+            rel={Tag === "a" ? "noopener" : undefined}
             data-tilt
             class:list={[
-              "flex flex-col gap-3 border bg-card p-6.5 text-fg transition-colors duration-300",
-              d.href
-                ? "border-acc hover:bg-card-2"
+              "flex flex-col gap-3 border bg-card p-6.5 text-left text-fg transition-colors duration-300",
+              linked
+                ? "cursor-pointer border-acc hover:bg-card-2"
                 : "border-line hover:border-acc",
             ]}
           >
@@ -64,15 +75,19 @@ import { degrees, courses } from "../data/education";
   >
     {
       courses.map((c) => {
-        const Tag = c.href ? "a" : "div";
+        const idx = c.cert ? certIndex.get(c.cert) : undefined;
+        const linked = idx !== undefined || Boolean(c.href);
+        const Tag = idx !== undefined ? "button" : c.href ? "a" : "div";
         return (
           <Tag
-            href={c.href}
-            target={c.href ? "_blank" : undefined}
-            rel={c.href ? "noopener" : undefined}
+            type={Tag === "button" ? "button" : undefined}
+            data-cert-open={idx}
+            href={Tag === "a" ? c.href : undefined}
+            target={Tag === "a" ? "_blank" : undefined}
+            rel={Tag === "a" ? "noopener" : undefined}
             class:list={[
-              "flex flex-col gap-1.75 bg-bg px-5.5 py-5 text-fg",
-              c.href && "transition-colors hover:bg-card-2",
+              "flex flex-col gap-1.75 bg-bg px-5.5 py-5 text-left text-fg",
+              linked && "cursor-pointer transition-colors hover:bg-card-2",
             ]}
           >
             <span class="font-mono text-[10px] uppercase tracking-[0.12em] text-dim">
@@ -89,4 +104,5 @@ import { degrees, courses } from "../data/education";
       })
     }
   </div>
+  <CertGallery />
 </section>
