@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap:https://luismontalvan.com/sitemap-index.xml
