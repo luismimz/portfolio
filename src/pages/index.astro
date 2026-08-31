@@ -4,6 +4,7 @@ import Nav from "../components/Nav.astro";
 import Hero from "../components/Hero.astro";
 import Marquee from "../components/Marquee.astro";
 import BeforeAfter from "../components/BeforeAfter.astro";
+import MobileNav from "../components/MobileNav.astro";
 import Work from "../components/Work.astro";
 import Experience from "../components/Experience.astro";
 import Education from "../components/Education.astro";
@@ -13,16 +14,17 @@ import Footer from "../components/Footer.astro";
 import Effects from "../components/Effects.astro";
 ---
 
-<Layout title="Luis Miguel Montalván - Portfolio" description="Portfolio · CV">
+<Layout>
   <Nav />
-  <Hero />
+  <Hero portraitUrl="/img/LuisMiguelMontalvan.webp" />
   <Marquee />
-  <BeforeAfter />
+  <BeforeAfter beforeUrl="/img/before.webp" afterUrl="/img/after.webp" />
   <Work />
   <Experience />
-  <Education />s
+  <Education />
   <Stack />
   <Contact />
   <Footer />
   <Effects />
+  <MobileNav />
 </Layout>

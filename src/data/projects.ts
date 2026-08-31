@@ -6,6 +6,7 @@ export interface Project {
   tags: string[];
   href?: string; //opcional: si no hay, la tarjeta no es un enlace
   mediaLabel: string; // text del area de imagen
+  image?: string; //opcional: si no hay, se muestra un placeholder
 }
 export const projects: Project[] = [
   {
@@ -16,6 +17,7 @@ export const projects: Project[] = [
     tags: ["WordPress", "PHP", "MySQL"],
     href: "https://lamanoamiga.es",
     mediaLabel: "lamanoamiga.es",
+    image: "/img/lamanoamiga.webp",
   },
   {
     n: "02",
@@ -26,6 +28,7 @@ export const projects: Project[] = [
     tags: ["WordPress", "SEO", "Nginx"],
     href: "https://pieleva.com",
     mediaLabel: "pieleva.com",
+    image: "/img/pieleva.webp",
   },
   {
     n: "03",
@@ -36,6 +39,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "TypeScript", "Tailwind"],
     href: "https://tiamariavallecas.com",
     mediaLabel: "tiamariavallecas.com",
+    image: "/img/after.webp",
   },
   {
     n: "04",

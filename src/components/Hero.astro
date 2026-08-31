@@ -29,12 +29,13 @@ const stats = [
 <section
   id="top"
   data-hero
-  class="relative mx-auto grid max-w-375 items-center gap-15 px-7 pb-17.5 pt-32.5 max-lg:grid-cols-1 lg:min-h-screen lg:grid-cols-[1.05fr_0.95fr]"
+  class="relative mx-auto grid max-w-375 items-center gap-15 px-4 md:px-7 pb-17.5 pt-28 lg:pt-32.5 max-lg:grid-cols-1 lg:min-h-screen lg:grid-cols-[1.05fr_0.95fr]"
 >
   <!-- Lienzo para el efecto matrix en 2D, lluvia de 1 y 0 se ilumina alrededor del cursor (se rellena en el Paso 6d) -->
-  <canvas data-hero-canvas class="absolute inset-0 z-0 h-full w-full opacity-90"
+  <canvas
+    data-hero-canvas
+    class="pointer-events-none absolute inset-0 z-0 h-full w-full opacity-90"
   ></canvas>
-
   <!-- Columna izquierda -->
   <div class="relative z-3 flex flex-col gap-7" data-reveal data-stagger>
     <div
@@ -45,9 +46,18 @@ const stats = [
     </div>
 
     <h1
-      class="m-0 text-[clamp(44px,6.6vw,104px)] font-medium leading-[0.88] tracking-tight text-balance"
+      data-split
+      class="relative m-0 whitespace-pre-line text-[clamp(44px,6.6vw,104px)] font-medium leading-[0.95] tracking-[0.04em]"
     >
-      Luis Miguel <span class="tracking-wide">Montalván</span>
+      <span data-ghost aria-hidden="true" class="invisible"
+        >{`Luis Miguel\nMontalván`}</span
+      >
+      <span data-typebox class="absolute inset-0">
+        <span data-type>{`Luis Miguel\nMontalván`}</span><span
+          data-caret
+          style="display:none; width:0.5em; height:0.86em; background:var(--color-acc); margin-left:0.04em; vertical-align:-0.1em;"
+        ></span>
+      </span>
     </h1>
 
     <p
@@ -113,9 +123,12 @@ const stats = [
   </div>
 
   <!-- Columna derecha: retrato -->
-  <div class="relative z-2 grid min-h-[60svh] place-items-center">
+  <div
+    class="relative z-2 grid min-h-[60svh] place-items-center max-lg:order-first"
+  >
     <div class="relative aspect-4/5 w-[min(100%,470px)]">
       <div
+        data-portrait
         class="absolute inset-0 grid place-items-center overflow-hidden rounded border border-line bg-card-2"
       >
         <span class="absolute font-mono text-[44px] tracking-[0.06em] text-dim"
@@ -126,16 +139,31 @@ const stats = [
             <img
               src={portraitUrl}
               alt="Luis Miguel Montalván"
-              class="relative h-full w-full object-cover grayscale contrast-[1.06] saturate-[.55] brightness-[.88]"
+              class="absolute inset-0 h-full w-full object-cover object-[center_25%] contrast-[1.06] transition-[filter] duration-500"
             />
           )
         }
+        <canvas
+          data-portrait-rain
+          class="pointer-events-none absolute inset-0 h-full w-full opacity-0 mix-blend-screen transition-opacity duration-300"
+        ></canvas>
+        <div
+          data-portrait-glow
+          class="pointer-events-none absolute inset-0 opacity-0 transition-opacity duration-400"
+        >
+        </div>
+        <div
+          data-scanline
+          class="pointer-events-none absolute inset-x-0 h-0.5 opacity-0 transition-opacity duration-300"
+          style="background: linear-gradient(90deg, red, green, blue)"
+        >
+        </div>
       </div>
 
       <div
         class="absolute -bottom-8.5 left-0 flex items-center gap-2.5 font-mono text-[10px] uppercase tracking-[0.12em] text-dim"
       >
-        <span>Pasa el ratón</span>
+        <span data-portrait-hint class="transition-colors">Pasa el ratón</span>
       </div>
 
       <div
@@ -154,7 +182,7 @@ const stats = [
   </div>
 
   <div
-    class="scrollhint absolute bottom-5.5 left-7 z-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim"
+    class="scrollhint absolute bottom-5.5 left-7 z-3 font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim max-lg:hidden"
   >
     Scroll ↓
   </div>
@@ -225,7 +253,6 @@ const stats = [
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches; // si el usuario prefiere reducir la animación, no dibujamos nada
   if (canvas && ctx && !reduced) {
     // -Colores: los leemos de los css variables definidas en global.css --
-    const css = getComputedStyle(document.documentElement); // obtenemos los estilos computados del documento
     const hexToRgb = (hex: string): [number, number, number] => {
       // función para convertir un color hexadecimal a RGB
       const s = hex.trim().replace("#", ""); // quitamos el símbolo # y los espacios en blanco
@@ -348,5 +375,242 @@ const stats = [
       }
     };
     frame();
+  }
+</script>
+
+<script>
+  /*luismontalvan.com - Luis Miguel Montalván*/
+  const h = document.querySelector<HTMLElement>("[data-split]");
+  const out = h?.querySelector<HTMLElement>("[data-type]");
+  const caret = h?.querySelector<HTMLElement>("[data-caret]");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  if (h && out && caret && !reduced) {
+    const NAME = "Luis Miguel\nMontalván"; // \n = salto a la segunda línea
+    const DOMAIN = "luismontalvan.com";
+
+    const nameStyle = () => {
+      out.style.fontFamily = "";
+      out.style.fontSize = "";
+      out.style.letterSpacing = "";
+    };
+    const domainStyle = () => {
+      out.style.fontFamily = "var(--font-mono)";
+      out.style.fontSize = "0.5em";
+      out.style.letterSpacing = "-0.01em";
+    };
+
+    const paint = (txt: string) => {
+      if (txt.endsWith(".com")) {
+        out.textContent = txt.slice(0, -4);
+        const dot = document.createElement("span");
+        dot.style.color = "var(--color-acc)";
+        dot.textContent = ".com";
+        out.appendChild(dot);
+      } else {
+        out.textContent = txt;
+      }
+    };
+
+    type Step = { delay: number; txt: string; name?: boolean };
+    const steps: Step[] = [];
+    let d = 520;
+    for (let i = 1; i <= DOMAIN.length; i++) {
+      steps.push({ delay: d, txt: DOMAIN.slice(0, i) });
+      d = 54 + Math.random() * 36;
+    }
+    d = 900;
+    for (let i = DOMAIN.length - 1; i >= 0; i--) {
+      steps.push({ delay: d, txt: DOMAIN.slice(0, i) });
+      d = 28;
+    }
+    d = 340;
+    for (let i = 1; i <= NAME.length; i++) {
+      steps.push({ delay: d, txt: NAME.slice(0, i), name: true });
+      d = 48 + Math.random() * 32;
+    }
+
+    caret.style.display = "inline-block";
+    caret.style.animation = "blink 1s steps(1) infinite";
+    domainStyle();
+    out.textContent = "";
+
+    let i = 0;
+    const run = () => {
+      if (i >= steps.length) {
+        setTimeout(() => {
+          caret.style.transition = "opacity .5s ease";
+          caret.style.opacity = "0";
+        }, 700);
+        return;
+      }
+      const step = steps[i++];
+      setTimeout(() => {
+        if (step.name && out.style.fontFamily) nameStyle();
+        paint(step.txt);
+        run();
+      }, step.delay);
+    };
+    run();
+  }
+</script>
+<script>
+  const holder = document.querySelector<HTMLElement>("[data-portrait]");
+  const cv = holder?.querySelector<HTMLCanvasElement>("[data-portrait-rain]");
+  const glow = holder?.querySelector<HTMLElement>("[data-portrait-glow]");
+  const ctx = cv?.getContext("2d");
+  const img = holder?.querySelector<HTMLImageElement>("img");
+  const scan = holder?.querySelector<HTMLElement>("[data-scanline]");
+  const hint = document.querySelector<HTMLElement>("[data-portrait-hint]");
+  const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  const fine = window.matchMedia("(pointer: fine)").matches;
+
+  if (holder && cv && ctx && fine && !reduced) {
+    const hexToRgb = (hex: string): [number, number, number] => {
+      const s = hex.trim().replace("#", "");
+      const full = s.length === 3 ? [...s].map((c) => c + c).join("") : s;
+      const n = parseInt(full, 16);
+      return [(n >> 16) & 255, (n >> 8) & 255, n & 255];
+    };
+    const lum = ([r, g, b]: number[]) =>
+      (0.2126 * r + 0.7152 * g + 0.0722 * b) / 255;
+
+    const CELL = 15;
+    const dpr = Math.min(window.devicePixelRatio || 1, 2);
+    let w = 0,
+      h = 0,
+      cols = 0,
+      rows = 0;
+    let drops: number[] = [];
+    let glyphs: string[] = [];
+
+    const build = () => {
+      const r = holder.getBoundingClientRect();
+      w = r.width;
+      h = r.height;
+      if (!w || !h) return;
+      cv.width = Math.max(1, Math.round(w * dpr));
+      cv.height = Math.max(1, Math.round(h * dpr));
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      cols = Math.ceil(w / CELL);
+      rows = Math.ceil(h / CELL);
+      drops = Array.from({ length: cols }, () => Math.random() * rows);
+      glyphs = Array.from({ length: cols * rows }, () =>
+        Math.random() > 0.5 ? "1" : "0",
+      );
+    };
+    build();
+    window.addEventListener("resize", build);
+
+    let active = false;
+    let px = 0.5,
+      py = 0.5,
+      tpx = 0.5,
+      tpy = 0.5;
+    let reveal = 0; // 0 = oculto, 1 = visible (transición suave)
+    let tick = 0;
+    let raf = 0;
+
+    const draw = () => {
+      raf = requestAnimationFrame(draw);
+      if (!w || !h) return;
+
+      reveal += ((active ? 1 : 0) - reveal) * 0.09;
+      if (!active && reveal < 0.004) {
+        ctx.clearRect(0, 0, w, h);
+        cv.style.opacity = "0";
+        cancelAnimationFrame(raf);
+        raf = 0; // paramos el bucle cuando ya no se ve nada
+        return;
+      }
+      cv.style.opacity = String(Math.min(1, reveal * 1.15));
+
+      px += (tpx - px) * 0.14;
+      py += (tpy - py) * 0.14;
+      tick++;
+      if (glow) {
+        glow.style.background = `radial-gradient(240px circle at ${(px * w).toFixed(1)}px ${(py * h).toFixed(1)}px, rgba(255,255,255,0.10), transparent 70%)`;
+      }
+      if (tick % 3 === 0) {
+        for (let c = 0; c < cols; c++) {
+          drops[c] += 0.34 + (c % 5) * 0.06;
+          if (drops[c] > rows + 6) drops[c] = -Math.random() * 8;
+        }
+        for (let k = 0; k < 26; k++) {
+          glyphs[Math.floor(Math.random() * glyphs.length)] =
+            Math.random() > 0.5 ? "1" : "0";
+        }
+      }
+
+      let [ar, ag, ab] = hexToRgb(
+        getComputedStyle(document.documentElement).getPropertyValue(
+          "--color-acc",
+        ),
+      );
+      if (lum([ar, ag, ab]) < 0.55) {
+        // acento oscuro (tema claro): lo aclaramos para que se vea sobre la foto
+        ar = Math.min(255, ar + 150);
+        ag = Math.min(255, ag + 150);
+        ab = Math.min(255, ab + 150);
+      }
+
+      const cx = px * w;
+      const cy = py * h;
+      const R = Math.min(w, h) * 0.52; // radio del área de lluvia
+
+      ctx.clearRect(0, 0, w, h);
+      ctx.font = "600 12px 'JetBrains Mono', monospace";
+      ctx.textBaseline = "top";
+
+      for (let c = 0; c < cols; c++) {
+        const x = c * CELL + 2;
+        const head = drops[c];
+        for (let r = 0; r < rows; r++) {
+          const y = r * CELL;
+          const dist = Math.hypot(x - cx, y - cy);
+          if (dist > R) continue;
+          const near = 1 - dist / R;
+          const trail = head - r;
+          if (trail < 0 || trail > 11) continue;
+          const fade = 1 - trail / 11;
+          const a = near * near * fade * reveal * (trail < 1 ? 1 : 0.86);
+          if (a < 0.035) continue;
+          // la cabeza de cada columna en blanco, la estela en acento
+          ctx.fillStyle =
+            trail < 1
+              ? `rgba(255,255,255,${Math.min(1, a * 1.25).toFixed(3)})`
+              : `rgba(${ar},${ag},${ab},${a.toFixed(3)})`;
+          ctx.fillText(glyphs[r * cols + c] ?? "0", x, y);
+        }
+      }
+
+      if (scan) scan.style.top = `${(py * 100).toFixed(2)}%`;
+    };
+
+    const enter = () => {
+      active = true;
+      if (glow) glow.style.opacity = "1";
+      if (img)
+        img.style.filter = "grayscale(1) contrast(1.06) brightness(0.62)";
+      if (scan) scan.style.opacity = "0.75";
+      if (hint) hint.style.color = "var(--color-acc)";
+      if (!raf) draw();
+    };
+    const leave = () => {
+      active = false;
+      if (glow) glow.style.opacity = "0";
+      if (img) img.style.filter = ""; // vuelve al filtro de la clase
+      if (scan) scan.style.opacity = "0";
+      if (hint) hint.style.color = "";
+    };
+
+    holder.addEventListener("pointerenter", enter);
+    holder.addEventListener("pointerleave", leave);
+    holder.addEventListener("pointermove", (e) => {
+      const r = holder.getBoundingClientRect();
+      tpx = (e.clientX - r.left) / r.width;
+      tpy = (e.clientY - r.top) / r.height;
+      if (!active) enter();
+    });
   }
 </script>
