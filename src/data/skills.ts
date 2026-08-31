@@ -10,27 +10,27 @@ export interface SkillGroup {
 
 export const skillGroups: SkillGroup[] = [
   {
-    label: "A diario",
+    label: "A menudo",
     skills: [
       { name: "PHP (WordPress / Joomla)", level: 88 },
       { name: "HTML / CSS / Tailwind", level: 90 },
-      { name: "JavaScript / TypeScript", level: 85 },
+      { name: "JavaScript / TypeScript", level: 60 },
     ],
   },
   {
-    label: "Con soltura",
+    label: "A diario",
     skills: [
-      { name: "Linux / Nginx / DNS / Correo", level: 82 },
-      { name: "MySQL / PostgreSQL", level: 80 },
-      { name: "Node / NestJS", level: 74 },
+      { name: "Linux / Nginx / DNS / Correo", level: 70 },
+      { name: "MySQL / PostgreSQL", level: 60 },
+      { name: "Node / NestJS", level: 65 },
     ],
   },
   {
     label: "Aprendiendo ahora",
     skills: [
-      { name: "Java · MOOC Helsinki II", level: 70 },
+      { name: "Java · MOOC Helsinki II", level: 25 },
       { name: "Next.js", level: 60 },
-      { name: "Docker / CI", level: 50 },
+      { name: "Docker / CI", level: 40 },
     ],
   },
 ];

@@ -18,7 +18,7 @@ export const degrees: Degree[] = [
   {
     eyebrow: "Grado Superior · En curso",
     title: "Desarrollo de Aplicaciones Multiplataforma",
-    text: "Ilerna. Java, bases de datos, acceso a datos e interfaces.",
+    text: "Ilerna. Java, AI, bases de datos, acceso a datos Sistema de gestion empresarial, interfaces.",
   },
   {
     eyebrow: "Grado Medio · Título oficial",
@@ -47,7 +47,7 @@ export const courses: Course[] = [
   },
   {
     meta: "2023 · Gamelearn",
-    title: "Liderazgo, productividad y negociación",
+    title: "Liderazgo, productividad, gestion del tiempo y negociación",
     note: "Pacific, Triskelion y Merchants",
   },
   { meta: "2022 · Udemy ↗", 
@@ -57,6 +57,6 @@ export const courses: Course[] = [
   {
     meta: "2017 · Servicio Canario de Empleo",
     title: "Actividades de venta",
-    note: "Trato con cliente y cierre",
+    note: "Trato con cliente, contabilidad y cierre",
   },
 ];

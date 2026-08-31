@@ -1,72 +1,112 @@
 export interface Project {
-  n: string; //"01"
-  kind: string; // etiqueta corta: "WordPress", "Backend"..
+  n: string;
+  kind: string;
   title: string;
   description: string;
   tags: string[];
-  href?: string; //opcional: si no hay, la tarjeta no es un enlace
-  mediaLabel: string; // text del area de imagen
-  image?: string; //opcional: si no hay, se muestra un placeholder
+  href?: string;
+  mediaLabel: string;
+  image?: string;
+  hidden?: boolean;
 }
+
 export const projects: Project[] = [
   {
     n: "01",
     kind: "WordPress",
     title: "La Mano Amiga",
-    description: "Sitio web con gestion de agenda, formulario, pagos y correo del dominio. Mantenimiento y copias continuas.",
-    tags: ["WordPress", "PHP", "MySQL"],
+    description:
+      "Web de servicios con gestión de citas, disponibilidad, formularios, pagos online y correo corporativo. También realizo su mantenimiento, seguridad y copias de respaldo.",
+    tags: ["WordPress", "Amelia", "Elementor", "PHP", "MySQL"],
     href: "https://lamanoamiga.es",
-    mediaLabel: "lamanoamiga.es",
+    mediaLabel: "Vista de lamanoamiga.es",
     image: "/img/lamanoamiga.webp",
   },
+
   {
     n: "02",
     kind: "WordPress",
     title: "Pieleva",
     description:
-      "Web de servicios con catálogo, SEO técnico y optimización de imágenes. Certificados y firewall gestionados por mí.",
-    tags: ["WordPress", "SEO", "Nginx"],
+      "Web corporativa con catálogo de servicios, optimización SEO, mejora de imágenes, configuración de certificados SSL, seguridad y mantenimiento técnico.",
+    tags: ["WordPress", "SEO", "PHP", "MySQL", "Seguridad"],
     href: "https://pieleva.com",
-    mediaLabel: "pieleva.com",
+    mediaLabel: "Vista de pieleva.com",
     image: "/img/pieleva.webp",
   },
+
   {
     n: "03",
-    kind: "Migrada a Next.js",
+    kind: "Next.js",
     title: "Tía María Vallecas",
     description:
-      "Reconstruida desde WordPress a Next.js conservando URLs y SEO. Compárala arriba con el antes y el después.",
-    tags: ["Next.js", "TypeScript", "Tailwind"],
+      "Reconstrucción de una web WordPress con Next.js, TypeScript y Tailwind CSS, conservando URLs y SEO. Incluye diseño responsive, galería, formularios y sistema de reservas.",
+    tags: ["Next.js", "React", "TypeScript", "Tailwind CSS", "SEO"],
     href: "https://tiamariavallecas.com",
-    mediaLabel: "tiamariavallecas.com",
+    mediaLabel: "Nueva web de Tía María Vallecas",
     image: "/img/after.webp",
   },
+
   {
     n: "04",
     kind: "Infraestructura",
-    title: "Servidor dedicado autogestionado",
+    title: "Servidor dedicado con Plesk",
     description:
-      "DNS, correo con SPF/DKIM/DMARC, firewall y fail2ban, certificados, copias y despliegues. Aquí viven todas estas webs.",
-    tags: ["Linux", "Nginx", "DNS / Correo"],
-    mediaLabel: "panel del servidor",
+      "Administración de un servidor dedicado Hetzner con Ubuntu y Plesk para alojar varios proyectos, dominios, bases de datos, certificados y copias de seguridad. DNS gestionadas en Cloudflare y correo empresarial en Microsoft 365.",
+    tags: [
+      "Hetzner",
+      "Ubuntu",
+      "Plesk",
+      "Cloudflare",
+      "Microsoft 365",
+      "Fail2ban",
+    ],
+    mediaLabel: "Panel del servidor dedicado",
   },
+
   {
     n: "05",
-    kind: "DAM",
-    title: "Proyectos del ciclo en Java",
+    kind: "DevOps",
+    title: "VPS con Coolify y Docker",
     description:
-      "Aplicaciones con JavaFX y MySQL, más los ejercicios del MOOC de Helsinki. Código abierto en mi GitHub.",
-    tags: ["Java", "JavaFX", "MySQL"],
-    href: "https://github.com/luismimz",
-    mediaLabel: "app de escritorio",
+      "Configuración de un VPS Hetzner con Ubuntu, Docker y Coolify para desplegar aplicaciones desde GitHub. Incluye dominios, certificados, variables de entorno, reglas de seguridad en Cloudflare y correo corporativo en IONOS.",
+    tags: [
+      "Hetzner",
+      "Ubuntu",
+      "Coolify",
+      "Docker",
+      "GitHub",
+      "Cloudflare",
+    ],
+    mediaLabel: "Panel de despliegues de Coolify",
   },
+
   {
     n: "06",
     kind: "Backend",
-    title: "API en NestJS con JWT y roles",
+    title: "API REST con NestJS",
     description:
-      "Gestor de incidencias documentado con Swagger, PostgreSQL y despliegue continuo en mi servidor, en curso.",
-    tags: ["NestJS", "TypeScript", "PostgreSQL"],
-    mediaLabel: "esquema de la API",
+      "Desarrollo de una API modular con autenticación JWT, control de acceso por roles, validación de datos, documentación con Swagger y base de datos PostgreSQL.",
+    tags: [
+      "NestJS",
+      "TypeScript",
+      "JWT",
+      "PostgreSQL",
+      "Swagger",
+      "Docker",
+    ],
+    mediaLabel: "Documentación de la API",
   },
-]
+
+  {
+    n: "07",
+    kind: "Java",
+    title: "Proyectos en Java",
+    description:
+      "Aplicaciones y ejercicios desarrollados con Java, programación orientada a objetos, colecciones, archivos, excepciones, JavaFX y bases de datos MySQL.",
+    tags: ["Java", "JavaFX", "POO", "MySQL", "JUnit"],
+    href: "https://github.com/luismimz",
+    mediaLabel: "Aplicaciones desarrolladas en Java",
+    hidden: true,
+  },
+];

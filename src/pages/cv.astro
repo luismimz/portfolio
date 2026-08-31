@@ -1,0 +1,245 @@
+---
+import Layout from "../layouts/Layout.astro";
+import { experience } from "../data/experience";
+import { degrees, courses } from "../data/education";
+import { certificates } from "../data/certificates";
+import { skillGroups } from "../data/skills";
+
+const profile = {
+  name: "Luis Miguel Montalván Zambrano",
+  role: "Desarrollador fullstack junior",
+  location: "Fuerteventura, España",
+  email: "hola@luismontalvan.com",
+  photo: "/img/avatar.png", // pon "" o borra la línea para quitarla
+  site: "luismontalvan.com",
+  github: "github.com/luismimz",
+  linkedin: "linkedin.com/in/luis-miguel-montalvan",
+  summary:
+    "Escribo el código y administro la máquina donde corre: TypeScript, NestJS, PHP y Java, más DNS, correo, firewall y despliegues en mi propio servidor dedicado. Seis años liderando un equipo en retail. Busco mi primer puesto junior en desarrollo, en un equipo donde se revise código con cuidado.",
+  languages: ["Español — nativo", "Inglés — lectura técnica"],
+  extras: ["Carné de conducir B + vehículo propio"],
+};
+
+// Stack como listas compactas por grupo (sin barras en papel)
+const stack = skillGroups.map((g) => ({
+  label: g.label,
+  items: g.skills.map((s) => s.name).join(" · "),
+}));
+---
+
+<Layout
+  title={`CV — ${profile.name}`}
+  description={`Currículum de ${profile.name}`}
+>
+  <div class="min-h-screen bg-neutral-200 px-4 py-8 print:bg-white print:p-0">
+    <!-- Barra de acciones: solo en pantalla -->
+    <div class="mx-auto mb-4 flex max-w-205 justify-between print:hidden">
+      <a
+        href="/"
+        class="font-mono text-xs text-neutral-500 hover:text-neutral-900"
+        >← al portfolio</a
+      >
+      <button
+        id="print-cv"
+        type="button"
+        class="rounded-full bg-neutral-900 px-4 py-2 text-xs font-medium text-white hover:bg-neutral-700"
+      >
+        Descargar PDF / Imprimir
+      </button>
+    </div>
+
+    <!-- La hoja -->
+    <article
+      class="mx-auto max-w-205 bg-white px-10 py-12 text-[13px] leading-relaxed text-neutral-800 shadow-xl print:max-w-none print:p-0 print:shadow-none"
+    >
+      <!-- Cabecera -->
+      <header
+        class="mb-6 flex items-start justify-between gap-6 border-b border-neutral-300 pb-5"
+      >
+        <div>
+          <h1
+            class="m-0 text-3xl font-semibold tracking-tight text-neutral-900"
+          >
+            {profile.name}
+          </h1>
+          <p class="m-0 mt-1 text-base text-neutral-600">{profile.role}</p>
+          <p
+            class="m-0 mt-3 flex flex-wrap gap-x-4 gap-y-1 font-mono text-[11px] text-neutral-600"
+          >
+            <span>{profile.location}</span>
+            <a href={`mailto:${profile.email}`} class="text-neutral-900"
+              >{profile.email}</a
+            >
+            <a href={`https://${profile.site}`} class="text-neutral-900"
+              >{profile.site}</a
+            >
+            <a href={`https://${profile.github}`} class="text-neutral-900"
+              >{profile.github}</a
+            >
+            <a href={`https://${profile.linkedin}`} class="text-neutral-900"
+              >LinkedIn</a
+            >
+          </p>
+        </div>
+
+        {
+          profile.photo && (
+            <img
+              src={profile.photo}
+              alt={profile.name}
+              class="h-28 w-24 shrink-0 rounded-md object-cover"
+            />
+          )
+        }
+      </header>
+
+      <!-- Perfil -->
+      <section class="mb-6">
+        <h2 class="cv-h2">Perfil</h2>
+        <p class="m-0">{profile.summary}</p>
+      </section>
+
+      <!-- Experiencia -->
+      <section class="mb-6">
+        <h2 class="cv-h2">Experiencia</h2>
+        {
+          experience.map((e) => (
+            <div class="mb-4 grid grid-cols-[110px_1fr] gap-4 break-inside-avoid last:mb-0">
+              <div class="font-mono text-[11px] text-neutral-500">{e.meta}</div>
+              <div>
+                <p class="m-0 font-semibold text-neutral-900">
+                  {e.title}
+                  {e.org && (
+                    <span class="font-normal text-neutral-500"> · {e.org}</span>
+                  )}
+                </p>
+                {e.text && <p class="m-0 mt-1 text-neutral-700">{e.text}</p>}
+              </div>
+            </div>
+          ))
+        }
+      </section>
+
+      <!-- Formación -->
+      <section class="mb-6">
+        <h2 class="cv-h2">Formación</h2>
+        {
+          degrees.map((d) => (
+            <div class="mb-3 grid grid-cols-[110px_1fr] gap-4 break-inside-avoid last:mb-0">
+              <div class="font-mono text-[11px] text-neutral-500">
+                {d.eyebrow}
+              </div>
+              <div>
+                <p class="m-0 font-semibold text-neutral-900">{d.title}</p>
+                <p class="m-0 mt-0.5 text-neutral-700">{d.text}</p>
+              </div>
+            </div>
+          ))
+        }
+      </section>
+
+      <!-- Certificados -->
+      <section class="mb-6">
+        <h2 class="cv-h2">Certificados y cursos</h2>
+        <ul class="m-0 list-none space-y-1.5 p-0">
+          {
+            certificates.map((c) => (
+              <li class="grid grid-cols-[110px_1fr] gap-4 break-inside-avoid">
+                <span class="font-mono text-[11px] text-neutral-500">
+                  {c.date}
+                </span>
+                <span>
+                  <span class="font-medium text-neutral-900">{c.title}</span>
+                  <span class="text-neutral-500"> · {c.issuer}</span>
+                  {c.verifyUrl && (
+                    <a
+                      href={c.verifyUrl}
+                      class="ml-1 font-mono text-[10px] text-neutral-500"
+                    >
+                      [verificar]
+                    </a>
+                  )}
+                </span>
+              </li>
+            ))
+          }
+          {
+            courses
+              .filter((c) => !c.cert)
+              .map((c) => (
+                <li class="grid grid-cols-[110px_1fr] gap-4 break-inside-avoid">
+                  <span class="font-mono text-[11px] text-neutral-500">
+                    {c.meta}
+                  </span>
+                  <span>
+                    <span class="font-medium text-neutral-900">{c.title}</span>
+                    {c.note && (
+                      <span class="text-neutral-500"> · {c.note}</span>
+                    )}
+                  </span>
+                </li>
+              ))
+          }
+        </ul>
+      </section>
+
+      <!-- Stack -->
+      <section class="mb-6 break-inside-avoid">
+        <h2 class="cv-h2">Stack</h2>
+        {
+          stack.map((g) => (
+            <p class="m-0 mb-1">
+              <span class="font-mono text-[11px] text-neutral-500">
+                {g.label}:{" "}
+              </span>
+              {g.items}
+            </p>
+          ))
+        }
+      </section>
+
+      <!-- Idiomas / extras -->
+      <section class="break-inside-avoid">
+        <h2 class="cv-h2">Idiomas y otros</h2>
+        <p class="m-0">
+          {[...profile.languages, ...profile.extras].join(" · ")}
+        </p>
+      </section>
+    </article>
+  </div>
+</Layout>
+
+<style>
+  .cv-h2 {
+    margin: 0 0 0.6rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 10px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: #737373;
+  }
+</style>
+
+<style is:global>
+  @media print {
+    @page {
+      size: A4;
+      margin: 14mm;
+    }
+    html,
+    body {
+      background: #fff !important;
+    }
+    /* la escena del portfolio no debe colarse aquí, pero por si acaso */
+    [data-cursor],
+    [data-mobile-tabs] {
+      display: none !important;
+    }
+  }
+</style>
+
+<script>
+  document
+    .getElementById("print-cv")
+    ?.addEventListener("click", () => window.print());
+</script>

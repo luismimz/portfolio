@@ -1,0 +1,154 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="404 — Página no encontrada" description="Esta ruta no existe.">
+  <main
+    class="mx-auto grid min-h-screen max-w-xl place-items-center px-6 py-20"
+  >
+    <div class="flex w-full flex-col items-center gap-8 text-center">
+      <div>
+        <h1 class="m-0 text-8xl font-semibold leading-none tracking-tighter">
+          404
+        </h1>
+        <p
+          class="m-1 font-mono text-[12px] uppercase tracking-[0.8em] text-muted"
+        >
+          Error
+        </p>
+      </div>
+
+      <p class="m-0 max-w-sm text-[15px] leading-[1.6] text-fg/75 text-pretty">
+        Esta ruta no existe o se movió. Muévete con la consola o vuelve al
+        inicio.
+      </p>
+
+      <div
+        class="w-full rounded-lg border border-line bg-card p-4 text-left font-mono text-[13px] leading-relaxed"
+      >
+        <div
+          data-term-out
+          class="max-h-64 space-y-1 overflow-y-auto wrap-break-words text-muted"
+        >
+          <div>zsh: cd: no such file or directory</div>
+          <div>
+            escribe <span class="text-acc">help</span> para ver a dónde puedes ir
+          </div>
+        </div>
+
+        <form data-term-form class="mt-3 flex items-baseline gap-2">
+          <span class="shrink-0 text-acc"
+            >luismi@portfolio<span class="text-dim">:~$</span></span
+          >
+          <input
+            data-term-input
+            type="text"
+            autocomplete="off"
+            autocapitalize="off"
+            spellcheck="false"
+            aria-label="Consola de navegación"
+            class="min-w-0 flex-1 bg-transparent text-fg caret-acc outline-none"
+          />
+        </form>
+      </div>
+
+      <a
+        href="/"
+        class="rounded-full border border-line bg-card px-5 py-3 font-mono text-[12px] text-muted no-underline transition-colors hover:bg-card-2 hover:text-fg"
+      >
+        o vuelve al inicio →
+      </a>
+    </div>
+  </main>
+</Layout>
+
+<script>
+  const out = document.querySelector<HTMLElement>("[data-term-out]");
+  const form = document.querySelector<HTMLFormElement>("[data-term-form]");
+  const input = document.querySelector<HTMLInputElement>("[data-term-input]");
+
+  if (out && form && input) {
+    input.focus();
+
+    const routes: Record<string, string> = {
+      "": "/",
+      "/": "/",
+      "~": "/",
+      "..": "/",
+      inicio: "/",
+      home: "/",
+      top: "/",
+      trabajos: "/#trabajos",
+      proyectos: "/#trabajos",
+      "antes-despues": "/#antes-despues",
+      experiencia: "/#trayectoria",
+      formacion: "/#formacion",
+      formación: "/#formacion",
+      certificados: "/#formacion",
+      stack: "/#stack",
+      contacto: "/#contacto",
+      contact: "/#contacto",
+      cv: "/cv",
+      curriculum: "/cv",
+      currículum: "/cv",
+    };
+
+    // cada llamada = un <div> nuevo → siempre en vertical
+    const print = (text: string, cls = "") => {
+      const line = document.createElement("div");
+      if (cls) line.className = cls;
+      line.textContent = text;
+      out.appendChild(line);
+      out.scrollTop = out.scrollHeight;
+    };
+
+    const go = (dest: string) => {
+      print("→ " + dest, "text-acc");
+      setTimeout(() => (window.location.href = dest), 180);
+    };
+
+    const run = (raw: string) => {
+      const line = raw.trim();
+      print("luismi@portfolio:~$ " + line, "text-fg");
+      if (!line) return;
+
+      const [cmd, ...rest] = line.split(/\s+/);
+      const arg = rest.join(" ").replace(/^\/+/, "").toLowerCase();
+
+      switch (cmd) {
+        case "help":
+          print("comandos:  ls · cd <destino> · cv · whoami · clear");
+          print(
+            "destinos:  inicio · trabajos · experiencia · formacion · stack · contacto",
+          );
+          return;
+        case "ls":
+          print("trabajos  experiencia  formacion  stack  contacto  cv");
+          return;
+        case "clear":
+          out.replaceChildren();
+          return;
+        case "pwd":
+          print("/404");
+          return;
+        case "whoami":
+          print("Luis Miguel Montalván — desarrollador fullstack junior");
+          return;
+      }
+
+      const target =
+        cmd === "cd" || cmd === "open"
+          ? arg
+          : cmd.replace(/^\/+/, "").toLowerCase();
+      if (target in routes) return go(routes[target]);
+
+      print("zsh: command not found: " + cmd, "text-dim");
+    };
+
+    form.addEventListener("submit", (e) => {
+      e.preventDefault();
+      run(input.value);
+      input.value = "";
+    });
+  }
+</script>

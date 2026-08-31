@@ -14,8 +14,15 @@ export const experience : TimelineEntry[]=[
   },
   {
     meta: "2019 - Hoy",
-    title: "Administracion de servidor dedicado y VPS",
+    title: "Administración de servidor dedicado y VPS",
     org: "Autogestión",
     text: "DNS, Cloudflare, correo, firewall, certificados SSL, copias de seguridad y despliegues."
-  }
+  },
+  {
+  meta: "2018 - Hoy",
+  title: "Responsable de tienda",
+  org: "Orange · Fuerteventura",
+  text: "Dirijo un equipo de 5–7 personas: horarios, conflictos, formación y seguimiento individual para que cada uno progrese. KPIs, planes de acción, gestión de incidencias y soporte informático del punto de venta — equipos, impresoras y aplicaciones internas (Siebel, Pangea, extranet, ARPA…). Aquí aprendí a liderar, priorizar y traducir lo técnico a quien no lo es.",
+},
+
 ]

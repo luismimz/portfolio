@@ -1,6 +1,7 @@
 ---
 import { projects } from "../data/projects";
 import ProjectCard from "./ProjectCard.astro";
+const visibleProjects = projects.filter((p) => !p.hidden);
 ---
 
 <section
@@ -27,6 +28,6 @@ import ProjectCard from "./ProjectCard.astro";
     data-stagger
     class="grid grid-cols-[repeat(auto-fit,minmax(320px,1fr))] gap-5"
   >
-    {projects.map((project) => <ProjectCard project={project} />)}
+    {visibleProjects.map((project) => <ProjectCard project={project} />)}
   </div>
 </section>

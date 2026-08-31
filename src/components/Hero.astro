@@ -7,22 +7,35 @@ const { portraitUrl } = Astro.props;
 const social = [
   { href: "https://github.com/luismimz", label: "GitHub ↗" },
   {
-    href: "https://www.linkedin.com/in/luis-miguel-montalv%C3%A1n-a0b09a42/",
+    href: "https://www.linkedin.com/in/luis-miguel-montalvan",
     label: "LinkedIn ↗",
   },
   { href: "https://www.instagram.com/luismi.mz", label: "Instagram ↗" },
 ];
 
 const stats = [
-  { value: "3", suffix: "", count: 3, label: "Webs en producción" },
+  { value: "4", suffix: "", count: 4, label: "Webs en producción" },
   { value: "6", suffix: "+", count: 6, label: "Años con WordPress" },
+  { value: "1", suffix: "+", count: 8, label: "Liderando equipos en Orange" },
+  { value: "DAM", suffix: "", count: null, label: "Estudios en curso" },
   {
-    value: "SMIR + DAM",
+    value: "SMIR",
     suffix: "",
     count: null,
     label: "Titulaciones oficiales",
   },
-  { value: "1", suffix: "", count: null, label: "Servidor dedicado propio" },
+  {
+    value: "1",
+    suffix: "+",
+    count: null,
+    label: "Servidor dedicado Plesk",
+  },
+  {
+    value: "1",
+    suffix: "+",
+    count: null,
+    label: "Servidor VPS Coolify",
+  },
 ];
 ---
 
@@ -76,7 +89,7 @@ const stats = [
         Ver trabajos en producción →
       </a>
       <a
-        href="#contacto"
+        href="/cv"
         class="inline-flex items-center gap-2.5 rounded-full border border-line px-6 py-3.5 text-fg transition-colors hover:border-fg"
       >
         Descargar CV
@@ -129,7 +142,7 @@ const stats = [
     <div class="relative aspect-4/5 w-[min(100%,470px)]">
       <div
         data-portrait
-        class="absolute inset-0 grid place-items-center overflow-hidden rounded border border-line bg-card-2"
+        class="absolute inset-0 grid place-items-center overflow-hidden rounded-3xl border border-line bg-card-2"
       >
         <span class="absolute font-mono text-[44px] tracking-[0.06em] text-dim"
           >LM</span

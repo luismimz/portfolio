@@ -1,19 +1,56 @@
 @import "tailwindcss";
 /* Primer proyecto con Tailwind CSS y Astro */
 @theme {
-  --color-bg : #0b0b0a;
-  --color-fg: #f0eee8;
-  --color-muted: #8c8a82;
-  --color-dim: #5c5b56;
-  --color-line: rgba(240,238,232,0.13);
-  --color-card: #101010;
-  --color-card-2: #191913;
-  --color-acc: #e8e4dc;
-  --color-ink: #0b0b0a;
+  /* CLARO = base */
+  --color-bg: #f5f3ed;
+  --color-fg: #15150f;
+  --color-muted: #5f5d55;
+  --color-dim: #736f65;
+  --color-line: rgba(21, 21, 15, 0.14);
+  --color-card: #fcfbf6;
+  --color-card-2: #ece9e0;
+  --color-acc: #1b1b12;
+  --color-ink: #f7f5f0;
+
   --font-sans: "Space Grotesk", Helvetica, sans-serif;
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
   --font-serif: "Instrument Serif", Georgia, serif;
 }
+
+:root {
+  color-scheme: light;
+}
+
+/* OSCURO — forzado por el usuario */
+:root[data-theme="dark"] {
+  color-scheme: dark;
+  --color-bg: #0b0b0a;
+  --color-fg: #f0eee8;
+  --color-muted: #8c8a82;
+  --color-dim: #5c5b56;
+  --color-line: rgba(240, 238, 232, 0.13);
+  --color-card: #101010;
+  --color-card-2: #191913;
+  --color-acc: #e8e4dc;
+  --color-ink: #0b0b0a;
+}
+
+/* OSCURO — por el sistema, si el usuario no ha forzado claro */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+    --color-bg: #0b0b0a;
+    --color-fg: #f0eee8;
+    --color-muted: #8c8a82;
+    --color-dim: #5c5b56;
+    --color-line: rgba(240, 238, 232, 0.13);
+    --color-card: #101010;
+    --color-card-2: #191913;
+    --color-acc: #e8e4dc;
+    --color-ink: #0b0b0a;
+  }
+}
+
 /* Capa de estilo global para el proyecto */
 @layer base {
   html {
@@ -69,42 +106,9 @@
       filter: none;
     }
   }
-  @keyframes blink {
+  
+@keyframes blink {
   0%, 60% { opacity: 1; }
   61%, 100% { opacity: 0.15; }
 }
-
-}
-/* --- Tema claro: forzado por el usuario --- */
-:root[data-theme="light"] {
-  color-scheme: light;
-  --color-bg: #f5f3ed;
-  --color-fg: #15150f;
-  --color-muted: #5f5d55;
-  --color-dim: #736f65;
-  --color-line: rgba(21, 21, 15, 0.14);
-  --color-card: #fcfbf6;
-  --color-card-2: #ece9e0;
-  --color-acc: #1b1b12;
-  --color-ink: #f7f5f0;
-}
-
-/* --- Tema claro: por el sistema, si el usuario no ha forzado oscuro --- */
-@media (prefers-color-scheme: light) {
-  :root:not([data-theme="dark"]) {
-    color-scheme: light;
-    --color-bg: #f5f3ed;
-    --color-fg: #15150f;
-    --color-muted: #5f5d55;
-    --color-dim: #736f65;
-    --color-line: rgba(21, 21, 15, 0.14);
-    --color-card: #fcfbf6;
-    --color-card-2: #ece9e0;
-    --color-acc: #1b1b12;
-    --color-ink: #f7f5f0;
-  }
-}
-
-:root {
-  color-scheme: dark;
 }
