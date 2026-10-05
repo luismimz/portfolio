@@ -1,6 +1,6 @@
 ---
 import { skillGroups } from "../data/skills";
-import SkillBar from "./SkillBar.astro";
+//import SkillBar from "./SkillBar.astro";
 ---
 
 <section
@@ -18,8 +18,8 @@ import SkillBar from "./SkillBar.astro";
       Stack y lenguajes
     </h2>
     <p class="m-0 max-w-[320px] text-[13.5px] leading-[1.6] text-muted">
-      Honesto con el nivel: lo que uso a diario, lo que manejo y lo que estoy
-      aprendiendo ahora.
+      Tecnologías aplicadas en proyectos reales, manejo habitual y áreas en las
+      que sigo profundizando.
     </p>
   </div>
 
@@ -34,9 +34,13 @@ import SkillBar from "./SkillBar.astro";
           <div class="font-mono text-[10.5px] uppercase tracking-[0.14em] text-dim">
             {group.label}
           </div>
-          {group.skills.map((s) => (
-            <SkillBar name={s.name} level={s.level} />
-          ))}
+          <ul class="m-0 flex list-none flex-col gap-3 p-0">
+            {group.skills.map((skill) => (
+              <li class="text-[14.5px] leading-[1.6] text-fg text-pretty">
+                {skill.name}
+              </li>
+            ))}
+          </ul>
         </div>
       ))
     }
